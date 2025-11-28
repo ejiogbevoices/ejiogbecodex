@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Debug FA</title>
+</head>
+<body>
+    <h1>Debug FA</h1>
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error("Global Error:", message, "at", source, ":", lineno, ":", colno);
+            document.body.innerHTML += `<p style="color:red">Error: ${message} at line ${lineno}</p>`;
+        };
+    </script>
+    <script src="js/data/ogbe_oyeku_fa.js"></script>
+</body>
+</html>

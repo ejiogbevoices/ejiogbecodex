@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejiogbe Odu Codex 16 | 256</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+                console.log("Service Workers Unregistered");
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <header class="app-header">
+            <div class="logo">Ejiogbe Odu Codex 16 | 256</div>
+            <nav>
+                <a href="#home" class="nav-link">HOME</a>
+                <a href="#browse" class="nav-link">BROWSE</a>
+                <a href="#divinities" class="nav-link">DIVINITIES</a>
+                <a href="#vodun" class="nav-link">VODUN</a>
+                <a href="#erindinlogun" class="nav-link">ÉÉRÌNDÍNLÓGÚN</a>
+                <a href="#glossary" class="nav-link">GLOSSARY</a>
+                <a href="#compare" class="nav-link">COMPARE</a>
+                <a href="#journal" class="nav-link">JOURNAL</a>
+                <a href="#bookmarks" class="nav-link">BOOKMARKS</a>
+                <a href="#calendar" class="nav-link">CALENDAR</a>
+                <a href="#obi-abata" class="nav-link">OBI ABATA</a>
+                <a href="#about" class="nav-link">ABOUT</a>
+                <button id="text-size-btn" class="nav-link btn-text-size" title="Adjust Text Size"
+                    style="background:none; border:none; cursor:pointer; color:inherit;">Text Size</button>
+            </nav>
+        </header>
+
+        <main id="main-content">
+            <!-- Views will be rendered here -->
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; 2025 Ejiogbe Institute</p>
+        </footer>
+    </div>
+
+    <script src="js/data/divinities.js?v=2"></script>
+    <script src="js/data/erindinlogun.js"></script>
+    <!-- Data Loading (Split into 16 files: 8 Ifa, 8 Fa) -->
+    <script src="js/data/ogbe_oyeku_ifa.js"></script>
+    <script src="js/data/ogbe_oyeku_fa.js"></script>
+    <script src="js/data/iwori_odi_ifa.js"></script>
+    <script src="js/data/iwori_odi_fa.js"></script>
+    <script src="js/data/irosun_owonrin_ifa.js"></script>
+    <script src="js/data/irosun_owonrin_fa.js"></script>
+    <script src="js/data/obara_okanran_ifa.js"></script>
+    <script src="js/data/obara_okanran_fa.js"></script>
+    <script src="js/data/ogunda_osa_ifa.js"></script>
+    <script src="js/data/ogunda_osa_fa.js"></script>
+    <script src="js/data/ika_oturupon_ifa.js"></script>
+    <script src="js/data/ika_oturupon_fa.js"></script>
+    <script src="js/data/otura_irete_ifa.js"></script>
+    <script src="js/data/otura_irete_fa.js"></script>
+    <script src="js/data/ose_ofun_ifa.js"></script>
+    <script src="js/data/ose_ofun_fa.js"></script>
+    <script src="js/data/isese_calendar.js"></script>
+    <script src="js/data/obi_abata.js"></script>
+    <script src="js/data/loader.js"></script>
+    <script src="js/data/glossary.js?v=2"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

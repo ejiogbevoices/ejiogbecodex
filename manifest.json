@@ -1,0 +1,20 @@
+{
+  "name": "Ejiogbe Odu Codex 16 | 256",
+  "short_name": "Ejiogbe Codex",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f1115",
+  "theme_color": "#d4af37",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192.png?text=Odu",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512.png?text=Odu",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
