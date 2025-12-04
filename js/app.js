@@ -34,13 +34,353 @@ const routes = {
     'erindinlogun-detail': renderErindinlogunDetail,
     'glossary': renderGlossary,
     'calendar': renderCalendar,
-    'obi-abata': renderObiAbata
+    'obi-abata': renderObiAbata,
+    'ceremonies': renderCeremonies,
+    'tools': renderTools,
+    'ori': renderOri,
+    'ewe': renderEwe,
+    'ebbo-riru': renderEbboRiru,
+    'iwure': renderIwure,
+    'opele-ikin': renderOpeleIkin
 };
+
+function renderTools() {
+    const container = document.createElement('div');
+    container.className = 'container tools-view';
+
+    container.innerHTML = `
+        <div class="hero" style="padding: 2rem 0; text-align: center;">
+            <h1>Divination Tools</h1>
+            <p class="subtitle">Instruments of the Oracle</p>
+        </div>
+        
+        <div class="tools-categories" style="display: flex; flex-direction: column; gap: 40px; margin-top: 30px;">
+            ${toolsData.map(category => `
+                <div class="tools-category">
+                    <h2 style="color: var(--color-text-dim); border-bottom: 1px solid var(--color-border); padding-bottom: 10px; margin-bottom: 20px;">${category.category}</h2>
+                    <div class="tools-grid" style="display: grid; gap: 25px;">
+                        ${category.items.map(tool => `
+                            <div class="tool-card section-block" style="padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                                <h3 style="color: var(--color-accent); margin-bottom: 10px; font-size: 1.3rem;">${tool.name}</h3>
+                                <p style="margin-bottom: 15px; line-height: 1.6; opacity: 0.9;">${tool.description}</p>
+                                
+                                ${tool.details && tool.details.length > 0 ? `
+                                    <div class="tool-details" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                                        <ul style="margin: 0; padding-left: 20px;">
+                                            ${tool.details.map(detail => `<li style="margin-bottom: 8px; opacity: 0.8;">${detail}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    return container;
+}
+
+function renderCeremonies() {
+    const container = document.createElement('div');
+    container.className = 'container ceremonies-view';
+
+    container.innerHTML = `
+        <div class="hero" style="padding: 2rem 0; text-align: center;">
+            <h1>Life Cycle Ceremonies</h1>
+            <p class="subtitle">Rites of Passage (Ìgbésẹ̀ Ayé)</p>
+        </div>
+        
+        <div class="ceremonies-grid" style="display: grid; gap: 30px; margin-top: 30px;">
+            ${ceremoniesData.map(ceremony => `
+                <div class="ceremony-card section-block" style="padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: var(--color-accent); margin-bottom: 10px; font-size: 1.4rem;">${ceremony.name}</h3>
+                    <p style="margin-bottom: 15px; line-height: 1.6; opacity: 0.9;">${ceremony.description}</p>
+                    
+                    ${ceremony.details && ceremony.details.length > 0 ? `
+                        <div class="ceremony-details" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                            <ul style="margin: 0; padding-left: 20px;">
+                                ${ceremony.details.map(detail => `<li style="margin-bottom: 8px; opacity: 0.8;">${detail}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    return container;
+}
+
+function renderOri() {
+    const container = document.createElement('div');
+    container.className = 'container ori-view';
+
+    container.innerHTML = `
+        <div class="hero" style="padding: 2rem 0; text-align: center;">
+            <h1>${oriData.title}</h1>
+            <p class="subtitle">Destiny & Consciousness</p>
+        </div>
+        
+        <div class="ori-sections" style="display: flex; flex-direction: column; gap: 40px; margin-top: 30px;">
+            ${oriData.sections.map(section => `
+                <div class="ori-section section-block" style="padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h2 style="color: var(--color-accent); margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">${section.title}</h2>
+                    
+                    ${section.content && typeof section.content === 'string' ? `<p style="line-height: 1.6; opacity: 0.9;">${section.content}</p>` : ''}
+                    
+                    ${section.items ? `
+                        <div class="ori-items-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                            ${section.items.map(item => `
+                                <div class="ori-item" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">
+                                    <h4 style="color: var(--color-text-bright); margin-bottom: 5px;">${item.name}</h4>
+                                    <p style="font-size: 0.9rem; opacity: 0.8;">${item.description}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    ${section.content && Array.isArray(section.content) ? `
+                        <div class="ori-verses" style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+                            ${section.content.map(verse => `
+                                <div class="verse-container" style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; border-left: 3px solid var(--color-accent);">
+                                    <h4 style="margin-bottom: 10px; opacity: 0.9;">${verse.title}</h4>
+                                    <div class="verse-content" style="display: grid; gap: 15px;">
+                                        <div class="yoruba" style="font-style: italic; opacity: 0.9;">${verse.yoruba.replace(/\n/g, '<br>')}</div>
+                                        <div class="english" style="opacity: 0.8;">${verse.english.replace(/\n/g, '<br>')}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    return container;
+}
+
+function renderEwe() {
+    const container = document.createElement('div');
+    container.className = 'container ewe-view';
+
+    container.innerHTML = `
+        <div class="hero" style="padding: 2rem 0; text-align: center;">
+            <h1>Ewé (Herbs)</h1>
+            <p class="subtitle">Sacred Plants of Yoruba Tradition</p>
+        </div>
+        
+        <div class="ewe-grid" style="display: grid; gap: 30px; margin-top: 30px;">
+            ${eweData.map(herb => `
+                <div class="herb-card section-block" style="padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <div class="herb-header" style="margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                        <h2 style="color: var(--color-accent); margin-bottom: 5px;">${herb.name}</h2>
+                        <div style="margin-bottom: 15px;">
+                            <div style="font-style: italic; opacity: 0.9; margin-bottom: 8px;">${herb.botanicalName}</div>
+                            <div style="display: grid; gap: 4px; font-size: 0.9rem; opacity: 0.8; padding-left: 10px; border-left: 2px solid rgba(255,255,255,0.1);">
+                                ${herb.englishName ? `<div><span style="opacity: 0.5; width: 30px; display: inline-block;">EN:</span> ${herb.englishName}</div>` : ''}
+                                ${herb.spanishName ? `<div><span style="opacity: 0.5; width: 30px; display: inline-block;">ES:</span> ${herb.spanishName}</div>` : ''}
+                                ${herb.portugueseName ? `<div><span style="opacity: 0.5; width: 30px; display: inline-block;">PT:</span> ${herb.portugueseName}</div>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-bottom: 20px; line-height: 1.6; opacity: 0.9;">${herb.description}</p>
+                    
+                    <div class="herb-uses" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">
+                        <h4 style="margin-bottom: 10px; color: var(--color-text-dim);">Traditional Uses:</h4>
+                        <ul style="margin: 0; padding-left: 20px;">
+                            ${herb.uses.map(use => `<li style="margin-bottom: 8px; opacity: 0.8;">${use}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    return container;
+}
+
+function renderEbboRiru() {
+    const container = document.createElement('div');
+    container.className = 'container ebbo-riru-view';
+
+    container.innerHTML = `
+        <div class="hero" style="padding: 2rem 0; text-align: center;">
+            <h1>${ebboRiruData.title}</h1>
+            <p class="subtitle">${ebboRiruData.description}</p>
+        </div>
+        
+        <div class="ebbo-content" style="display: flex; flex-direction: column; gap: 40px; margin-top: 30px;">
+            <div class="ebbo-steps section-block" style="padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <h2 style="color: var(--color-accent); margin-bottom: 20px; text-align: center;">Ritual Steps</h2>
+                <div class="steps-list" style="display: flex; flex-direction: column; gap: 20px;">
+                    ${ebboRiruData.steps.map(step => `
+                        <div class="step-item" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border-left: 4px solid var(--color-accent);">
+                            <h3 style="margin-bottom: 5px; color: var(--color-text-bright);">${step.title}</h3>
+                            <p style="opacity: 0.8;">${step.description}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <div class="ebbo-verses section-block" style="padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <h2 style="color: var(--color-accent); margin-bottom: 20px; text-align: center;">Sacred Verses</h2>
+                <div class="verses-list" style="display: flex; flex-direction: column; gap: 30px;">
+                    ${ebboRiruData.verses.map(verse => `
+                        <div class="verse-container" style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px;">
+                            <h3 style="margin-bottom: 15px; color: var(--color-text-dim); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">${verse.title}</h3>
+                            <div class="verse-content" style="display: grid; gap: 20px;">
+                                <div class="yoruba">
+                                    <h4 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; opacity: 0.6;">Yoruba</h4>
+                                    <p style="font-style: italic; line-height: 1.6; font-size: 1.1rem;">${verse.yoruba.replace(/\n/g, '<br>')}</p>
+                                </div>
+                                <div class="english">
+                                    <h4 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; opacity: 0.6;">English</h4>
+                                    <p style="line-height: 1.6; opacity: 0.9;">${verse.english.replace(/\n/g, '<br>')}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    return container;
+}
+
+function renderIwure() {
+    const container = document.createElement('div');
+    container.className = 'container iwure-view';
+
+    container.innerHTML = `
+        <div class="hero" style="padding: 2rem 0; text-align: center;">
+            <h1>Ìwúre</h1>
+            <p class="subtitle">Sacred Prayers & Supplications</p>
+        </div>
+        
+        <div class="iwure-grid" style="display: grid; gap: 30px; margin-top: 30px;">
+            ${iwureData.map(iwure => `
+                <div class="iwure-card section-block" style="padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h2 style="color: var(--color-accent); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">${iwure.title}</h2>
+                    
+                    <div class="iwure-content" style="display: grid; gap: 20px;">
+                        <div class="yoruba">
+                            <h4 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; opacity: 0.6;">Yoruba</h4>
+                            <p style="font-style: italic; line-height: 1.6; font-size: 1.1rem; white-space: pre-line;">${iwure.yoruba}</p>
+                        </div>
+                        <div class="english">
+                            <h4 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; opacity: 0.6;">English</h4>
+                            <p style="line-height: 1.6; opacity: 0.9; white-space: pre-line;">${iwure.english}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    return container;
+}
+
+
+function renderOpeleIkin() {
+    const container = document.createElement('div');
+    container.className = 'container opele-ikin-view';
+
+    container.innerHTML = `
+        <div class="hero" style="padding: 2rem 0; text-align: center;">
+            <h1>Ọ̀pẹ̀lẹ̀ & Ikin Ifá</h1>
+            <p class="subtitle">Sacred Instruments of Divination</p>
+        </div>
+        
+        <div class="opele-ikin-content" style="display: flex; flex-direction: column; gap: 50px; margin-top: 30px;">
+            <!-- Opele Section -->
+            <div class="section-block" style="padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <div class="section-header" style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <h2 style="color: var(--color-accent);">${opeleIkinData.opele.title}</h2>
+                    <p style="opacity: 0.8; font-style: italic;">${opeleIkinData.opele.name}</p>
+                </div>
+                
+                <p style="margin-bottom: 20px; line-height: 1.6; opacity: 0.9;">${opeleIkinData.opele.description}</p>
+                
+                <div class="attributes-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                    ${opeleIkinData.opele.attributes.map(attr => `
+                        <div class="attribute-item" style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; text-align: center; font-size: 0.9rem;">
+                            ${attr}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="verses-list" style="display: flex; flex-direction: column; gap: 20px;">
+                    ${opeleIkinData.opele.verses.map(verse => `
+                        <div class="verse-container" style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; border-left: 3px solid var(--color-accent);">
+                            <h3 style="margin-bottom: 10px; opacity: 0.9; font-size: 1.1rem;">${verse.title}</h3>
+                            <div class="verse-content" style="display: grid; gap: 15px;">
+                                <div class="yoruba" style="font-style: italic; opacity: 0.9;">${verse.yoruba.replace(/\n/g, '<br>')}</div>
+                                <div class="english" style="opacity: 0.8;">${verse.english.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <!-- Ikin Section -->
+            <div class="section-block" style="padding: 25px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <div class="section-header" style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <h2 style="color: var(--color-accent);">${opeleIkinData.ikin.title}</h2>
+                    <p style="opacity: 0.8; font-style: italic;">${opeleIkinData.ikin.name}</p>
+                </div>
+                
+                <p style="margin-bottom: 20px; line-height: 1.6; opacity: 0.9;">${opeleIkinData.ikin.description}</p>
+                
+                <div class="attributes-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                    ${opeleIkinData.ikin.attributes.map(attr => `
+                        <div class="attribute-item" style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; text-align: center; font-size: 0.9rem;">
+                            ${attr}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="verses-list" style="display: flex; flex-direction: column; gap: 20px;">
+                    ${opeleIkinData.ikin.verses.map(verse => `
+                        <div class="verse-container" style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; border-left: 3px solid var(--color-accent);">
+                            <h3 style="margin-bottom: 10px; opacity: 0.9; font-size: 1.1rem;">${verse.title}</h3>
+                            <div class="verse-content" style="display: grid; gap: 15px;">
+                                <div class="yoruba" style="font-style: italic; opacity: 0.9;">${verse.yoruba.replace(/\n/g, '<br>')}</div>
+                                <div class="english" style="opacity: 0.8;">${verse.english.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    return container;
+}
 
 function getRoute() {
     const hash = window.location.hash.slice(1) || 'home';
     const [path, param] = hash.split('/');
     return { path, param };
+}
+
+function createReturnToTopButton() {
+    const container = document.createElement('div');
+    container.className = 'return-top-container';
+    container.innerHTML = `
+        <a href="#" class="btn-return-top">
+            <span>↑</span> Return to Top
+        </a>
+    `;
+    container.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    return container;
 }
 
 function navigate() {
@@ -51,6 +391,7 @@ function navigate() {
         const main = document.getElementById('main-content');
         main.innerHTML = ''; // Clear content
         main.appendChild(renderer(param));
+        main.appendChild(createReturnToTopButton());
 
         // Update active nav state
         document.querySelectorAll('.nav-link').forEach(link => {
@@ -271,10 +612,7 @@ function renderOduDetail(id) {
                         <p class="verse-yoruba">${(verse.yoruba || '').replace(/\n/g, '<br>')}</p>
                         <p class="verse-english">${(verse.translation || verse.english || '').replace(/\n/g, '<br>')}</p>
                         
-                        <details style="margin-top: var(--spacing-md);">
-                            <summary>Read Story</summary>
-                            <p>${verse.story}</p>
-                        </details>
+
                     </div>
                 `).join('')}
             </div>` : ''}
@@ -1023,6 +1361,13 @@ function renderDivinityDetail(id) {
         <div class="divinity-detail-header" style="position: relative;">
             <button class="btn-outline" onclick="window.history.back()" style="position: absolute; left: 0; top: 0; padding: 0.5rem 1rem; font-size: 0.8rem;">← Back</button>
             <span class="tag" style="margin-bottom: var(--spacing-sm); display: inline-block; margin-top: var(--spacing-lg);">${category}</span>
+            
+            ${divinity.image ? `
+            <div class="divinity-image-container" style="margin: 20px auto; text-align: center;">
+                <img src="${divinity.image}" alt="${divinity.name}" style="max-width: 100%; max-height: 300px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);">
+            </div>
+            ` : ''}
+
             <h1>${divinity.name}</h1>
             <div class="divinity-aka">Also known as: ${(divinity.aka || []).join(', ') || 'N/A'}</div>
             <h2 class="subtitle" style="margin-top: var(--spacing-sm);">${divinity.title}</h2>

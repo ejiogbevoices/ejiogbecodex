@@ -714,3 +714,35 @@
     font-weight: 600;
     color: var(--color-text);
 }
+
+/* Return to Top */
+.return-top-container {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-return-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-return-top:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+}

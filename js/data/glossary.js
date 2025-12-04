@@ -9386,5 +9386,281 @@ const glossaryData = [
     {
         "term": "óògun",
         "definition": "Medicine."
+    },
+    {
+        "term": "Àbòrí",
+        "definition": "Acceptance of sacrifice"
+    },
+    {
+        "term": "Àbọ̀yẹ",
+        "definition": "Sacrifice that preserves the client’s life"
+    },
+    {
+        "term": "Àbọ̀yìṣẹ̀",
+        "definition": "Sacrifice that manifests or becomes accepted"
+    },
+    {
+        "term": "Adì",
+        "definition": "Palm kernel"
+    },
+    {
+        "term": "Agbàgbà",
+        "definition": "Elders"
+    },
+    {
+        "term": "Agbọ̀nrínwẹ̀n",
+        "definition": "Name given to a child born with the umbilical cord around the neck"
+    },
+    {
+        "term": "Àgbò",
+        "definition": "Ram"
+    },
+    {
+        "term": "Àjẹ́ Ifá",
+        "definition": "Cut mark used for an Ifá child"
+    },
+    {
+        "term": "Akọ̀dá",
+        "definition": "Principal priest of Ifá; the one who learns directly from Ọ̀rúnmìlà"
+    },
+    {
+        "term": "Alágídíbà",
+        "definition": "Powerful person (also an epithet for Èṣù)"
+    },
+    {
+        "term": "Alápín",
+        "definition": "Albino (Blind person in some contexts)"
+    },
+    {
+        "term": "Arọ̀",
+        "definition": "Tortoise"
+    },
+    {
+        "term": "Arọ̀mọ̀",
+        "definition": "Name given to a girl who returned to the world after dying young"
+    },
+    {
+        "term": "Arúgà",
+        "definition": "Herbalist (Babaláwo specialising in herbal medicine)"
+    },
+    {
+        "term": "Bàbá Agbònrìngbìn",
+        "definition": "Honorific name for Ọ̀rúnmìlà"
+    },
+    {
+        "term": "Bàbáláwo",
+        "definition": "Ifá priest; the only one authorised to use Òpẹ̀lẹ̀ and Ìkín"
+    },
+    {
+        "term": "Bàálẹ̀",
+        "definition": "Village head; also “first settler of the town”"
+    },
+    {
+        "term": "Dídà",
+        "definition": "Child born with matted hair (dreaded hair from birth)"
+    },
+    {
+        "term": "Dídá Ifá",
+        "definition": "Compilation of Ifá"
+    },
+    {
+        "term": "Èèwọ̀",
+        "definition": "Taboo"
+    },
+    {
+        "term": "Ẹja Àrọ̀",
+        "definition": "Smoked fish"
+    },
+    {
+        "term": "Ẹ̀jì Ìwòrì",
+        "definition": "A verse of Odu Ìwòrì Meji"
+    },
+    {
+        "term": "Ẹ̀jìgbòmẹ̀kún",
+        "definition": "Ancient Ifá market"
+    },
+    {
+        "term": "Èkuru",
+        "definition": "Steamed bean cake without salt"
+    },
+    {
+        "term": "Ẹ̀kù Ifá",
+        "definition": "Rat offered in Ifá (Includes ìlàkìsí, ẹdá, olóṣè, ọ̀gìnbó, ipèrè, ìjìrun, etc.)"
+    },
+    {
+        "term": "Èlà",
+        "definition": "Purity; praise name for Ọ̀rúnmìlà"
+    },
+    {
+        "term": "Elégbèjì",
+        "definition": "Twins"
+    },
+    {
+        "term": "Èpẹ̀",
+        "definition": "Lathe (tool)"
+    },
+    {
+        "term": "Fágùnwa",
+        "definition": "A title referencing moral superiority of Ògún/Ọ̀yẹ̀kú lineage (in this text applied to Ọ̀rúnmìlà)"
+    },
+    {
+        "term": "Ìbọ̀",
+        "definition": "Reverence, respect, homage"
+    },
+    {
+        "term": "Ìbọ̀ Ifá",
+        "definition": "Divination paraphernalia of Ifá (seven items)"
+    },
+    {
+        "term": "Ìdẹ̀",
+        "definition": "Brass"
+    },
+    {
+        "term": "Ifá",
+        "definition": "Sacred messages of Olódùmarè manifested through Ọ̀rúnmìlà"
+    },
+    {
+        "term": "Ìgbò",
+        "definition": "Forest"
+    },
+    {
+        "term": "Ìgbẹ́",
+        "definition": "Name given to a girl who descends with a water pouch (Òpò)"
+    },
+    {
+        "term": "Ìkín",
+        "definition": "Sacred palm nuts of Ifá"
+    },
+    {
+        "term": "Ìkọ́kọ́ ọ̀rọ̀",
+        "definition": "Secret messages of Olódùmarè"
+    },
+    {
+        "term": "Ìmúlẹ̀",
+        "definition": "Sacred oath; covenant; solemn vow"
+    },
+    {
+        "term": "Ìrẹ̀",
+        "definition": "Good fortune"
+    },
+    {
+        "term": "Ìrúnmọlẹ̀",
+        "definition": "Primordial beings that once inhabited the Earth"
+    },
+    {
+        "term": "Ìsán Ifá",
+        "definition": "Sacred day of the Ifá week (13th day, related to Ìtọ́dógún)"
+    },
+    {
+        "term": "Ìtọ́dógún Ifá",
+        "definition": "One of the twenty days of the Ifá cycle"
+    },
+    {
+        "term": "Ìyùn",
+        "definition": "Bead(s) or ceremonial necklace"
+    },
+    {
+        "term": "Kábíyèsí",
+        "definition": "“Your Majesty” or “One whose authority cannot be questioned”"
+    },
+    {
+        "term": "Labà",
+        "definition": "Ògún’s garment (Leather apron)"
+    },
+    {
+        "term": "Obìnrin",
+        "definition": "Female"
+    },
+    {
+        "term": "Odùdúwà",
+        "definition": "Progenitor of the Yoruba"
+    },
+    {
+        "term": "Òdì ìfẹ́",
+        "definition": "Compendium of Ifá verses"
+    },
+    {
+        "term": "Ogbó",
+        "definition": "Long life"
+    },
+    {
+        "term": "Ògún",
+        "definition": "Divinity of iron and creativity"
+    },
+    {
+        "term": "Òjè",
+        "definition": "Lead used by Ọbàtálá"
+    },
+    {
+        "term": "Òkó",
+        "definition": "Farm; farmland"
+    },
+    {
+        "term": "Ọkùnrin",
+        "definition": "Male"
+    },
+    {
+        "term": "Ọ̀lódùmarè",
+        "definition": "Supreme deity who presides over the universe"
+    },
+    {
+        "term": "Olóyè",
+        "definition": "Honorific chieftaincy title"
+    },
+    {
+        "term": "Ọmọ Ọ̀kórí-Fá",
+        "definition": "Ifá student; “one who learns Ifá”"
+    },
+    {
+        "term": "Ọ̀pá",
+        "definition": "Staff; walking stick"
+    },
+    {
+        "term": "Orí",
+        "definition": "Inner head; destiny; consciousness"
+    },
+    {
+        "term": "Òríkì",
+        "definition": "Praise names; praise poetry"
+    },
+    {
+        "term": "Òrìṣà",
+        "definition": "Divine emanations created by Olódùmarè"
+    },
+    {
+        "term": "Òrìṣà Nlá / Ọbàtálá",
+        "definition": "Divinity of creation"
+    },
+    {
+        "term": "Ọ̀rọ̀gbọ̀",
+        "definition": "Kola nut of the elders"
+    },
+    {
+        "term": "Ọrún Ifá",
+        "definition": "Day of Ifá (when special sacrifices offered)"
+    },
+    {
+        "term": "Owó",
+        "definition": "Money"
+    },
+    {
+        "term": "Òyẹ̀kú",
+        "definition": "One of the principal Odù"
+    },
+    {
+        "term": "Ṣàngó",
+        "definition": "Divinity of thunder"
+    },
+    {
+        "term": "Ṣèsèfún",
+        "definition": "White beads of Ọbàtálá"
+    },
+    {
+        "term": "Tàbàlà",
+        "definition": "Child born enclosed in a membrane (caul)"
+    },
+    {
+        "term": "Yéyé Ọdù",
+        "definition": "Exclamation used whenever Odù Ifá or Òfún Méjì is mentioned"
     }
 ];

@@ -160,6 +160,11 @@ const divinityData = {
                             title: "Tútùrúkù tútùrúkù",
                             yoruba: "Tútùrúkù tútùrúkù\nTútùrúkù túmúrúkù\n\nTútùrúkù Ajànàkú ló tẹ̀jọ̀mọ̀lé biribiri\nA dífá fún Ògún tí í rẹ̀ ilé bọ̀rì edè\n\nTí mo bá kú wá mí bo wò, pirigidi\nẸ́ fi kòkò dé mi mọ́lé pirigidi\n\nTí mo bá wọ̀ lọ wá mí bo wò, pirigidi\nẸ́ fi kòkò dé mi mọ́lé pirigidi\n\nTí agbára búbù bá wá mí bo wò, pirigidi\nẸ́ fi kòkò dé mi mọ́lé pirigidi\n\nTí ọ̀fọ̀ bá wá mí bo wò, pirigidi\nẸ́ fi kòkò dé mi mọ́lé pirigidi\n\nTí ìjà bá wá mí bo wò, pirigidi\nẸ́ fi kòkò dé mi mọ́lé pirigidi\n\nTí wahala bá wá mí bo wò, pirigidi\nẸ́ fi kòkò dé mi mọ́lé pirigidi\n\nTí owó bá wá mí bo wò, peregede\nẸ má mì sí mílẹ̀ peregede\n\nTí ire ilé bá wá mí bo wò, peregede\nẸ má mì sí mílẹ̀ peregede\n\nTí ire gbogbo bá wá mí bo wò, peregede\nẸ má mì sí mílẹ̀ peregede",
                             english: "Crying of a big animal.\nFearful look of a big animal.\nFearful posture of an elephant is more than that of buffalo.\n\nCast divination for Ògún while going to triumph over Edè.\n\nIf death is imminent, use your pot to cover me.\nIf sickness is imminent, use your pot to cover me.\nIf loss is imminent, use your pot to cover me.\nIf litigation is imminent, use your pot to cover me.\nIf trouble is imminent, use your pot to cover me.\nIf all evils is imminent, use your pot to cover me.\nIf money is visiting me, let me be reachable.\nIf good wife/husband is visiting me, let me be reachable.\nIf house blessing is visiting me, let me be reachable.\nIf all good things is visiting me, let me be reachable."
+                        },
+                        {
+                            title: "Oriki Ogun Kofe",
+                            yoruba: "Ògún lakaye\nÒgún famous in the world\nOnija ole\nthe strongest fighter\nEjemu Oniwonran\nthe blood drinker of Iwonran village (in ancient Ifẹ̀)\nAdigirigiri rebi ija\nthe one clever in fighting\nKoko eti odo ti ro minimini\nthe river bank grass sounds gently\nEgbe leyin omo kan\nhe favors lonely children\nEgbe leyin omo adaloro\nhe favors the orphan\nOnile kangun kangun ona Orun\nthe owner of many shaped houses in heaven\nMo ni Ògún Onire oko mi\nI said Ògún Onire my beloved!\nMo ni meje lÒgún mi\nI said there are seven Ògún of mine\nÒgún Alara nijaja\nÒgún Alara eats dog\nÒgún Onire won a j’agbo\nÒgún Onire eats ram\nÒgún ikola ni je igbin\nÒgún Ikola eats snail\nÒgún Molamola ni yekuru funfun\nÒgún Molamola eats white baked beans\nÒgún Gbondogbondo eja ni won je\nÒgún Gbondogbondo eats fish\nOgu Onigbajamo irun ni je\nÒgún Onigbajamo eats hair\nÒgún Alapata ni jeje eran\nÒgún Alapata eats animal blood\nOjumo Oni mo Kalapata mo mo je eje eran\nThe Butcher who eats animal blood every blessed day\nEjigbojo omo yawu kotoyagi\nEjigbojo who breaks the smithy before breaking trees\nAtamuyan alagbe abi emi selele\nAtamunyan the blacksmith who has razor scissors\n\nOgun ye!",
+                            english: "Ògún, famous in the world\nThe strongest fighter\nThe blood drinker of Iwonran village\nThe one clever in fighting\nThe river bank grass sounds gently\nHe favors lonely children\nHe favors the orphan\nThe owner of many shaped houses in heaven\nI said Ògún Onire my beloved!\nI said there are seven Ògún of mine\nÒgún Alara eats dog\nÒgún Onire eats ram\nÒgún Ikola eats snail\nÒgún Molamola eats white baked beans\nÒgún Gbondogbondo eats fish\nÒgún Onigbajamo eats hair\nÒgún Alapata eats animal blood\nThe Butcher who eats animal blood every blessed day\nEjigbojo who breaks the smithy before breaking trees\nAtamunyan the blacksmith who has razor scissors\n\nOgun ye!"
                         }
                     ]
                 },
@@ -192,7 +197,78 @@ const divinityData = {
                             title: "Èégún ará Òyó",
                             yoruba: "Èégún ará Òyó\nArá Ìwọ́, ará Ẹ̀fọ̀\nỌmọ Ọdá Ọba\nTí ó bá ti ṣepọ̀ wẹ̀n, èégún ará Òyó\nWọ́n a fẹ̀tàlẹ̀ lọ ní àwò orí\nWọ́n a máa sáré kíri\nOnílé orí Òkè, má fi ìṣèlàé ká mi mọ́\nTí wọ́n bá pè Ọya\nKó dáhùn ní ilé Irà\nTí wọ́n bá pè Òrìṣà Oko\nKó dáhùn ní ilé Ìrawọ̀\nTí wọ́n bá pè Olúbànjí (Ṣàngó)\nKó dáhùn ní ilé Irà\nIkú, bàbá ayé\nÀ pa má wáá ogún\nTí ó bá wá wọ́n ń gbọ́\nWọ́n a ma rẹ̀mì ìgbọ̀\nTí ó bá a wà ní ilé\nWọ́n a ma d’erò ọ̀nà\nṢàngó, ọkọ Ọya\nBí Ṣàngó bá wọ́n nígbẹ̀dọ̀h\nA ma tẹ̀ wọ́n ní’fá\nṢàngó, tó bá já bá já ja\nKó ṣe ilé oníbàtá sí…\nK’ó tó di ilé ẹ̀mí Olóyè FAMA sí\nÈégún tó gbé ’ni la ni fún odó kó fún\nÒrìṣà tó gbé ’ni la ní fi ọbì bo\nÀbímọ má gbàgbé\nṢàngó o, ọkọ Ọya.",
                             english: "The masquerade from Ọyọ.\nThe one from Ìwọ̀ and from Ẹ̀fọ̀.\nChild of the King’s river.\nWhen he is bathed and prepared, the masquerade of Ọyọ appears.\nWhen the people offend him, they think they were stung by ants.\nThey scatter, running in confusion.\nOwner of the earth, do not block my path.\nWhen they call on Oya, may she answer from Irà.\nWhen they call on Òrìṣà Ọkọ, may he answer from Ìrawọ̀.\nWhen they call on Olúbànjí (Ṣàngó),\nMay he answer from Irà.\nDeath, father of the world.\nHe does not kill because he wants a share of the victim’s property.\nWhen he comes among people, they tremble in the forest.\nIf he meets them in the bush, they run deeper inside.\nIf he meets them on the road, they turn into travelers.\nṢàngó, husband of Oya.\nIf Ṣàngó meets them in the battlefield,\nHe will pin them down with Ifá’s authority.\nṢàngó, the one who fights fiercely.\nRoll out the ilé oníbàtá drum for him.\nMake room for his shrine in the house of Ọlọ́yè FAMA.\nHe is the ancestor-masquerade who delivers a person from the river.\nHe is the òrìṣà who saves a person with a single kola nut.\nDo not forget your children.\nṢàngó, husband of Oya. He kills only for cause, only when there is offense.\nWhen he enters the forest, people flee.\nWhen he appears on the path, travelers scatter.\nṢàngó, husband of Oya.\nIf Ṣàngó meets them in the sacred grove,\nHe subdues them.\nṢàngó, the one who breaks through and clears the way.\nPrepare the drummer’s house for him.\nPrepare the house of the Chief (inserted name).\nThe ancestor-masquerade who carries a person across the river.\nThe òrìṣà who protects a person with a single kola nut.\nDo not forget your children.\nṢàngó, husband of Oya."
+                        },
+                        {
+                            title: "Orin Ṣàngó - Ṣàngó máa gbà o",
+                            yoruba: "Ṣàngó máa gbà o.\nṢàngó máa gbà o.\nṢàngó máa gbà o.\nȨni pe Ṣàngó mogba\nKo ma gbe’bo lo.",
+                            english: "Ṣàngó will accept it.\nṢàngó will accept it.\nṢàngó will accept it.\nThe person that says Ṣàngó will not accept it.\nShould go with the sacrifice."
+                        },
+                        {
+                            title: "Orin Ṣàngó - Sàngó ò ní f'aṣo òṣì ró wa o",
+                            yoruba: "Sàngó ò ní f'aṣo òṣì ró wa o.\nSàngó ò ní f'aṣo òṣì ró wa o.\nÒṣì ò wù wá, má fi dá wa o.\nSàngó ò ní f'aṣo òṣì ró wa o.",
+                            english: "Sàngó will not wrap the cloth of poverty around us.\nSàngó will not wrap the cloth of poverty around us.\nWe do not like poverty. Do not afflict us with it.\nSàngó will not wrap the cloth of poverty around us."
+                        },
+                        {
+                            title: "Orin Ṣàngó - Ṣàngó wa dé Ọlọ́mọyọyọ",
+                            yoruba: "Ṣàngó wa dé Ọlọ́mọyọyọ\nṢàngó wa dé Ọlọ́mọyọyọ\nÀgàn tí ò r'ọmọ́ pọ̀n kó tètè wá\nṢàngó wa dé Ọlọ́mọyọyọ",
+                            english: "Our Ṣàngó has arrived, who has many children.\nOur Ṣàngó has arrived, who has many children.\nThe barren women should come to Ṣàngó to get child.\nOur Ṣàngó has arrived, who has many children."
+                        },
+                        {
+                            title: "Orin Ṣàngó - Yóó máa rù'kúta ká",
+                            yoruba: "Yóó máa rù'kúta ká\nYóó máa rù'kúta ká\nẸni pé n má bọ Ṣàngó\nYóó máa rù'kúta ká\n\nYóó máa rùn bí asín\nYóó máa rùn bí asín\nẸni pé n má bọ Ṣàngó\nYóó máa rùn bí asín",
+                            english: "They will carry stone all around.\nThey will carry stone all around.\nWhoever says I should not appease Ṣàngó\nWill carry stone all around.\n\nThey will be smelling like Asin (a smelly rat)\nThey will be smelling like Asin.\nWhoever say I should not appease Ṣàngó,\nWill be smelling like Asin."
+                        },
+                        {
+                            title: "Orin Ṣàngó - Ṣàngó wà yọ",
+                            yoruba: "Ṣàngó wà yọ\nWán ṣe b'óṣù ló yọ\nṢàngó wà yọ\nWán ṣe b'óṣù ló yọ\nÀ ṣẹ̀ṣẹ̀ lé oṣù, abẹnu kọ́kọ́rọ́\nṢàngó wà yọ\nWán ṣe b'óṣù ló yọ",
+                            english: "Our Ṣàngó has come out.\nWe thought it was adosu who appeared.\nOur Ṣàngó has come out\nWe thought it was adosu who appeared.\nThe newly placed oṣù, pointy on top\nOur Ṣàngó has come out .\nWe thought it was adosu who appeared."
+                        },
+                        {
+                            title: "Orin Ṣàngó - Ọba Kòso má mà jẹ ayé wá lò wá",
+                            yoruba: "Ọba Kòso má mà jẹ ayé wá lò wá\nỌba Kòso má mà jẹ ayé wá lò wá\nÒrìṣà Ọba Kòso, Ọba Kòso\nÒrìṣà Ọba Kòso, Ọba Kòso\nEweleri Ọba Kòso",
+                            english: "Ọba Kòso, protect us from the evil deeds of others.\nThe herbalist.\nKing of Koso."
+                        },
+                        {
+                            title: "Olódùmarè ibà",
+                            yoruba: "Olódùmarè ibà\nOlúkóso ibà\nArábànbi ọkọ Oya\nAru ekú jẹ ayé\nÀyárá iná, iná lójú, iná lénu\n\nA pè ọ lónìí kí o jẹ́ gbèjé gbèjo\n\nIfá ní, Ó sá méjì la kọ já, ó kú yankan yakan lójú Òpón\n\nDífá fún Olúkóso, arábànbí níjọ tí ó bẹ láàrin ọtá,\nẹbọ wọ́n ní o ṣe, Ṣàngó gbé ẹbọ bẹ lọ rúbọ\n\nKí ni Ṣàngó fi ṣe tè? Igba ọta ni Ṣàngó fi ṣe tè, igba ọta\n\nKí ni ara fi ṣe tè? Òru bo n dú, ni ara fi ṣe tè, oru bo n dú\n\nṢàngó, dákun ó wà báwa ṣégun ọtá, ó bawá rẹ́yìn ọdì\n\nAse",
+                            english: "Praise to Olódùmarè\nPraise to the King of Koso\nArabanbi, the husband of Oya\nThe one who put on the astral cloth\nThe owner of fire, fire in his eyes and his mouth\n\nWe call upon you today\n\nIfa says, Osa meji passed, died in the center of the divine tray\n\nDivined for Ṣàngó, the King of Koso, on the day he was surrounded by enemies\nHe was told to make offerings and sacrifices, and he fulfilled them\n\nWhat did Ṣàngó use to defeat his enemies?\nHe used two hundred bullets\n\nWhat thunder did he use to strike the wrongdoers?\nHe used Orugbendu to destroy them\n\nṢàngó, please stand with us to overcome enemies\nand turn back all opposition\n\nAse"
                         }
+                    ]
+                },
+                {
+                    id: "aganju",
+                    name: "Aganjú",
+                    aka: ["Aganju Sola", "Aláàfin Aganjú"],
+                    title: "Spirit of the Volcano and Wilderness",
+                    description: "The Orisa of volcanoes, the earth's core, and untamed wilderness. Aganju represents the raw, transformative power of nature and is a protector of the oppressed.",
+                    attributes: ["Double-headed axe", "Ram", "Shovel", "Red and Brown cloth"],
+                    colors: ["Red", "Brown"],
+                    offerings: ["Ram", "Yam", "Palm oil"],
+                    day: "Wednesday",
+                    praiseNames: [
+                        "Òrìṣà Ńlá ti Ìgbẹ́ — The Great Spirit of the Wilderness",
+                        "A-bá-ni-wá-ọ̀nà — The one who forges paths",
+                        "Olú-Igbo — King of the Forest",
+                        "Iná-lórí-òkè — Fire on the mountain (Volcano)",
+                        "A-gbé-ni-le-ke — The uplifter"
+                    ]
+                },
+                {
+                    id: "ija",
+                    name: "Ìjà",
+                    aka: ["Ìjà-kú-mọ̀"],
+                    title: "Spirit of Battle and Hunt",
+                    description: "A warrior deity associated with war, hunting, and conflict. Often regarded as a brother or close companion to Ogun, representing the fierce aspect of the hunt and battle.",
+                    attributes: ["Bow and arrow", "Machete", "Whistle"],
+                    colors: ["Red", "Green"],
+                    offerings: ["Roasted yam", "Dog", "Palm wine"],
+                    day: "Tuesday",
+                    praiseNames: [
+                        "Ìjà-kú-mọ̀ — The one who fights without ceasing",
+                        "Arákùnrin Ògún — Brother of Ogun",
+                        "A-pà-ni-má-yọ̀ — The one who kills without hesitation",
+                        "Olóde Òru — Hunter of the night",
+                        "Afẹ̀-fẹ̀-yè-jú — The whirlwind fighter"
                     ]
                 },
                 {
@@ -206,7 +282,29 @@ const divinityData = {
                     offerings: ["Honey", "Cinnamon", "Oranges", "Pumpkin"],
                     day: "Friday",
                     praiseNames: [
-                        "Olódò — owner of the riverbank and flowing sweetness."
+                        "Ọ̀ṣun ṣẹ̀ngẹsẹ̀ (Ọṣun the great magician)",
+                        "Ọ̀ṣun orẹ̀ yèyé (Ọṣun the universal mother)",
+                        "Ọ̀ṣun aládé ọ́kìn (Ọṣun divinity with a transful crown made of peacock feathers)",
+                        "Ọ̀pọn mìẹ̀ pọ̀dọ̀ (Divinity of the river)",
+                        "Yèyé ọ̀ a dì lífẹ́ rẹ ọmọ (Oh mother one that pampers the child with brass)",
+                        "Ọ̀ṣun wẹ̀wẹ̀ wẹ̀ tí ń ṣọ̀ Ọ̀ṣun (Ọṣun is noted for pebbles)",
+                        "Ó wà yanrin wà yanrin kòwó sí (She who buries her money in the sand)",
+                        "Ọ̀ṣun Ọlọ́ọ́yà Iyin (Ọṣun the owner of coral comb)",
+                        "Ọ̀ṣun ọdẹ̀ ọ̀fun (Ọṣun the source of my stein)",
+                        "Ó ní ọ̀mọ wẹ̀rẹ̀ wẹ̀rẹ̀ lágbàlá (One hat is endowed with children)",
+                        "Yèyé Ọ̀ṣun mo bẹ̀—jẹ́ kí n gbadaye (Mother of water, I implore you, endow me with life of affluence)."
+                    ],
+                    verses: [
+                        {
+                            title: "Ìwòdìwòrẹ̀",
+                            yoruba: "A dífá fún Ọ̀ṣun Ẹ̀wùjí\nTí ń mẹ́wẹ̀ sẹ̀ràhùn ọmọ\nKò j pé kó jínà kà wá bání ní jébutu ọmọ\nJébutù ọmọ láà báni ìṣẹ́ ọpẹ̀",
+                            english: "Ìwòdìwòrẹ̀ Cast divination for Ọṣun\nWho was down cast in search of children\nBefore long we would be blessed with children.\nOne is usually blessed with many children in the base of Ọpẹ̀."
+                        },
+                        {
+                            title: "Ọ̀ṣun, aládẹ́ ọ̀kùn",
+                            yoruba: "Ọ̀ṣun, aládẹ́ ọ̀kùn\nỌ̀ṣun, aládẹ́ ọ̀kìn\nỌ̀ṣun mọ́lẹ̀ odò\nỌ̀gùdù gbádà\nỌ̀gùdù gbádà\nỌ̀gùdù gbádáramú\nỌ̀bìnrin gb’ọ̀nà, ọkùnrin sá\nGbàdàmú gbàdàmú tí kò ṣe e gbà lẹ́gbẹ̀ mí\nẸtì ekọ̀, a gba orun ọkọ má sùn\nYèyé Ọ̀, à fi ìdẹ́ rẹ̀ ọmọ́\nỌ̀yèyè n’ímá, ènì ìdẹ́ káf’ sùn\nA gbé nú ìmà fi ọhun t’ọ̀rẹ̀\nAtà wèrè wèrè ní ti Ọ̀ṣun\nỌ̀ wọ̣ yànrin wạ̀ yànrin k’ó wọ̀ sí\nỌ̀ṣun, kò k’ówó t’ẹ̀mí fún mí o\nMá fi owó t’ẹ̀mí mọ́ yànrin\nOrẹ̀ Yèyé ò!",
+                            english: "Oṣun, divinity whose crown is made with peacock feathers\nOṣun, goddess with a crown of capricious peacock feathers\nDivinity of the river\nShe who references the sound of the waves of the sea\nPowerful water\nThe woman always takes control of the road, meaning she becomes frightened when the sea or ocean overflows\nPowerful sea that cannot be sustained\nMother Ekó, who rejects sleeping with her husband when it is the husband’s turn to sleep\nOh Mother, take care of the little child with the mother’s breast\nThe wisdom that never tires\nThe one who teaches wisdom and shares wisdom\nOne who buries her money in sand\nSand is the raw material important for buildings\nOṣun, give me my own luck, meaning, make me prosperous\nDo not store my destiny-money in the sand\nThank you, Mother"
+                        }
                     ]
                 },
                 {
@@ -234,7 +332,14 @@ const divinityData = {
                     colors: [],
                     offerings: [],
                     day: "",
-                    praiseNames: []
+                    praiseNames: [],
+                    verses: [
+                        {
+                            title: "Ẹni a ní kọ kínnì léyìn",
+                            yoruba: "Ẹni a ní kọ kínnì léyìn, ẹ̀gún ló lóṣọ́wọ́\nẸni a ní kọ̀ fojú lọ́jú, ita ló fi ṣẹnu\nẸni a bá fún hàn ni ń jẹ aláròkìrì ẹ̀ni\n\nA dífá fún Ọsanyinwín ní tì ráyè àpèsìn\nEmi ó rọ́ pémi ní\nEtùtù agbèdè tó bá jí a kàgbàlagbà tí dòò",
+                            english: "The person who is to rub our back has thorny scrub in his hands\nThe person who is to blow dust from our eye has pepper in his mouth\nThe person we can confide in becomes a rumor monger\n\nCast divination for Ọsanyin who came to be served word wide\nMay I also have somebody to serve me.\nThe elders usually gathered around the ashes of the blacksmith."
+                        }
+                    ]
                 },
                 {
                     id: "obaluaye",
@@ -247,8 +352,16 @@ const divinityData = {
                     offerings: ["Roasted corn", "Palm wine"],
                     day: "",
                     praiseNames: [
-                        "Obalúaiyé — king of the hot earth.",
-                        "Ọmọlú — child of burning earth."
+                        "Olódè Ìbà Olódè — “The scourge of town.”",
+                        "Ọ̀fọ̀ṣà Olùṣọ́ ọfọ̀ — “The arrow shooter.”",
+                        "A fi ọ̀lùgbọ̀gbọ̀ dájú ìjà rú — “The one who uses the confusion-staff to scatter battle.”"
+                    ],
+                    verses: [
+                        {
+                            title: "Ògbẹ̀kànrán mọ̀lẹ̀ kọ̀ má bàa déjọ",
+                            yoruba: "Ògbẹ̀kànrán mọ̀lẹ̀ kọ̀ má bàa déjọ\nA dìfá fún Olódè ìjù ọmọ aṣáàṣọ̀ ṣẹ̀ṣẹ̀ gbowó\nApá ọ̀un le káyé lọ láì déjọ\nWọ́n ní kó rùbọ, ó rùbọ ní ó báa sẹ́\nA dífá fún Ọlódè ìjù ọmọ aṣáàṣọ̀ ṣẹ̀ṣẹ̀ gbowó\nKò pẹ́ kò jìnà kó bàa ní ìbànrẹ̀sẹ̀gun\nAá ní se ọmọ Olódè ìjù ọmọ aṣáàṣọ̀ ṣẹ̀ṣẹ̀ gbowó làá pe Ṣànpọnná",
+                            english: "Ògbẹ̀kànrán says no one will suffer unjust litigation.\nCast divination for Olódè, child of the forest,\nThe one who kills people for money.\n\nHe wanted to travel the world without getting into court trouble.\nHe was advised to sacrifice; he complied.\nAt long last, he was victorious.\n\nHow do you know the king of the forest who slays people for money?\nHe is Ṣànpọnná, the one whose name shakes the whole earth."
+                        }
                     ]
                 },
                 {
@@ -296,7 +409,20 @@ const divinityData = {
                     offerings: [],
                     day: "",
                     praiseNames: [
-                        "Oba-Òmí — king of the waters."
+                        "Olókun ọba omi — Olókun, the king of rivers.",
+                        "Ọba a gbènú ibù ṣọ́lá — The king who lives in the sea with a lot of wealth, fame and honours."
+                    ],
+                    verses: [
+                        {
+                            title: "Dẹ̀ndẹ̀n láà bòlu",
+                            yoruba: "Dẹ̀ndẹ̀n láà bòlu\nDẹ̀ndẹ̀n láà bòṣìn\nDẹ̀ndẹ̀n láà bòòrísà tóun lọ́kọ\nA dífá fún Olókun\nNíjọ́ omi Olókun kò tó láti wẹ̀ ìkàsí ọ̀wọ̀\nGbogbo omi wá gbéjọ̀, wọ́n wá fòri Olókun,\nOlókun mài làgbà",
+                            english: "Òtí is usually robed in white garment\nÒṣìn is usually robed in white garment\nDevotees of divinity is usually robed in white garment decorated with parrots feathers\nCast divination for Olókun\nWhen Olókun’s water is not enough to take bath in the morning\nRivers were channeled towards Olókun.\nOlókun became the king of them all"
+                        },
+                        {
+                            title: "Olokun aje ti aye oba omi",
+                            yoruba: "Olokun aje ti aye oba omi\nOmi nla to kari aye\nOsele gbe senibu omi\nTi koni momo\nGbogbo eni ti waye\n\nE je ka kori s’Ile Olokun\nSanle aje\nIya eni to l’aje 2x\nOgbugbu ni so oni so boji\nAlagbalu gbu omi 2 x\nEni ajiki\nEni ajike\nAi ri di Olokun\nAo mo bere re\nAje pe gbogbo omi\nE fi ori fun olokun gbogbo odo\nE fo ori fun Olokun oba omi\nOmi oooooooo",
+                            english: "Olokun a life without end\nQueen of water\nGreat water that covers the whole earth\nA wonderful ocean that has no end\nWhoever wants wealth\n\nLet them go to Olokun’s house\nWho has uncountable wealth\nMother of uncountable wealth\nOne who has abundant wealth\nWater without end\nShe who we greet early\nShe welcomes and receives well\nNobody knows the source of Olokun\nNo knows her beginning\nLet all water bow down for Olokun\nBecause Olokun is the head of all rivers\nBecause Olokun is the head, King of waters\nWater ooooooo"
+                        }
                     ]
                 },
                 {
@@ -311,6 +437,13 @@ const divinityData = {
                     day: "Saturday",
                     praiseNames: [
                         "Olúgbèrèrè — giver of good support and blessings."
+                    ],
+                    verses: [
+                        {
+                            title: "Ó ń wò mí",
+                            yoruba: "Ó ń wò mí\nMo ń wò ó\nTà lo ṣe hùn nínú wa\nA dífá fún Yemoja ọ̀tárá mọ̀gà òmòṣe lòdò, sigídì lẹ̀gbòdò\nBí yóò jẹ̀ yágan wọ́ lọ̀párà pèlú, ó rìnọ̀ lẹ́hìn adìẹ\nÓ bú pòrí sẹ́gì, ó ní nẹ́ ẹsẹ̀ oko ṣe nínú lọ́\nWọ́n ni kò kára nílé ẹbọ, ní kò ṣe, ó gbẹ́gbo, ó rúbọ\nKò pẹ́ kò jínnà, ká wá bání ní jẹ́búti ọmọ\nWá wò yèyé Yemoja wá wòyo\nỌlọ́mọ gbádùn séré.",
+                            english: "I am staring at you\nYou are staring at me\nWho is guilty among us\nCast divination for Yemoja the powerful immaculate mother that uses deep river as conclave.\nWhen she was barren and saw many offspring behind mother hen, she cried that why should birds have offspring more than her.\nShe was advised to offer sacrifice and she complied.\nEventually she was blessed with multiple children.\nLook at the broken bowls Yemoja looked at the broken bowls, the joyful mother of children."
+                        }
                     ]
                 },
                 {
@@ -524,7 +657,14 @@ const divinityData = {
                     attributes: ["Masquerade"],
                     colors: [],
                     offerings: [],
-                    day: ""
+                    day: "",
+                    verses: [
+                        {
+                            title: "Ká tí ẹ́ ká fi gbẹ̀ ẹ̀",
+                            yoruba: "Ká tí ẹ́ ká fi gbẹ̀ ẹ̀\nA dífá fún Òkúfìlàjúgbèmí ọmọ òkú ọ̀run\nMo bẹ̀ egúngún\nMo bẹ̀ egúngún elẹ́gẹ̣n\nÒrò mi afijádẹgbẹ\nGbogbo ìwàlẹ̀ wọ̀ṣẹ́ ọ̀run wọ̀n láwon ọ̀ gbà ẹ̀yì tí mo ṣe.",
+                            english: "Let’s print it to support it\nCast divination for Òkúfìlàjúgbèmí, the offspring of the ancestors.\nI appeased another man’s masquerade.\nI propitiated another man’s bones.\nMay my efforts be rewarded.\nThe heavenly spirits confirm the acceptance of my offering."
+                        }
+                    ]
                 },
                 {
                     id: "irunlè",
@@ -775,13 +915,20 @@ const divinityData = {
                 {
                     id: "agemo",
                     name: "Agemo",
-                    aka: [],
-                    title: "Agemo",
-                    description: "Description coming soon.",
-                    attributes: [],
-                    colors: [],
-                    offerings: [],
-                    day: ""
+                    aka: ["Alágẹmọ"],
+                    title: "Messenger of the Gods",
+                    description: "A significant deity venerated by the Ijebu people, embodied by the chameleon. Agemo serves as a divine messenger and intercessor, known for adaptability, protection of children, and safeguarding the future.",
+                    attributes: ["Chameleon", "Mat", "Multicolor cloth"],
+                    colors: ["Multicolor"],
+                    offerings: ["Yam", "Fruits"],
+                    day: "During Agemo Festival",
+                    praiseNames: [
+                        "Alágẹmọ — The owner of the chameleon spirit",
+                        "Òjíṣẹ́ Òrìṣà — Messenger of the gods",
+                        "Abòbí — Protector of children",
+                        "Oníwà-pẹ̀lẹ́ — The gentle-charactered one",
+                        "A-yí-àwọ̀-padà — The one who changes color"
+                    ]
                 },
                 {
                     id: "olueri",
@@ -863,7 +1010,29 @@ const divinityData = {
                     attributes: ["Birds"],
                     colors: [],
                     offerings: [],
-                    day: ""
+                    day: "",
+                    praiseNames: [
+                        "Ìyàmi Ọṣọ̀rọ̀họ̀ — The mysterious weird sisters.",
+                        "Àfínjú ẹyẹ — The famous birds.",
+                        "A pa mà wágún — One who kills without being interested in the victim’s inheritance.",
+                        "Ológọ́ dídù dúdú — The black cat of the night.",
+                        "Òkìkì Orú — The famous sisters of the night.",
+                        "A ráké kéké ké kémọ́ kẹ́jọ — User of small knife to cut intestines.",
+                        "Ò wọ̀ mí omi ọ̀sàlásílá — One who bathes in blood.",
+                        "À jẹdọ̀ ènìyàn mì bó jí — One who eats man’s liver without throwing up."
+                    ],
+                    verses: [
+                        {
+                            title: "Sá lú mí kí n sá lọ tìẹ̀",
+                            yoruba: "Sá lú mí kí n sá lọ tìẹ̀\nSísà lómi agbada nì sá lu ara wọn\nA dìfá fún Ọ̀rúnmìlà\nBàbá fi lọ rẹ̀ bá ẹ̀yẹ̣ mulẹ̀ ní pópóró ọ̀dò\nMo bá yín mulẹ̀ ẹ má bà mí o\nẸyín ẹyẹ mẹ́o bó yín mulẹ̀.",
+                            english: "Assist me and I will assist you\nThe water in the pot mixes together\nCast divination for Òrúnmìlà\nWhile going to make an oath with the weird sisters at the marshy side of a river\nI make an oath with you; do not betray me\nYou mysterious weird sisters, I make an oath with you."
+                        },
+                        {
+                            title: "Ìyá mi Ọ̀ṣòròngà",
+                            yoruba: "Ìyá mi Ọ̀ṣòròngà\nA fín’jú eyẹ\nẸyẹ tí ń fò\nAfínjú eyẹ\nẹyẹ tí ń fò wà á lógun\nÒun ni wọ́n ń pè ní Ọ̀ṣunwòyó àdò\nOlùrànlọ́wọ́ àdò\nÒun ni mọ́? lẹ́gàn dànù\nOlógbojú dúdú Ọ̀rú\nOlókìkí Ọ̀rú\nHabítànté fáránòsè la de n’úkùn\nAjé’ tí ọ́ títù, má bà mí\nÒbìnrin tí ń jẹ ẹran ọ̀kú, ẹyẹ tí ń jẹ egungun, tí ń jẹ ẹ̀jẹ̀\nDà’ṣẹ e d’pè nù tí fẹ̀ gbé’ mí mì bá’ kálòkálò\nỌ̀jí fẹ̀rí\nAfẹ̀gẹ́rẹ́ n’yẹ́\nẸyẹ tí ń fò s’ọ̀ ńlá ọ̀run\nA rí ọ̀gọ́ ọgbọ́ m’òrè\nA léjẹ̀ yín’jú ẹ̀sẹ̀, eyin ẹ̀yẹ Òmòrè\nÈyí tí a pé ní Ajé\nAjé’ tí kógbà kó, rìn ká’ígbòrò\nÓ jìn’ kútùfú omi ìgbòrò bó jí",
+                            english: "My mother, Ọ̀ṣòròngà\nThe refined bird\nThe immaculate bird\nThe bird of light feathers\nThe bird that flies with medicine\nShe is called Ọ̀ṣunwòyó of many calabashes\nThe owner of many medicinal gourds\nShe who casts away curses\nThe black-eyed presence of the night\nThe famous one of the night\nThe dweller of the mysterious night forest\nAjé who comes in coldness, do not harm me\nThe woman who eats corpses, the bird who eats bones and drinks blood\nShe who takes authority and shakes it down like gambling stakes\nThe shadow that destroys\nThe light feathered bird\nThe bird who flies into the great sky\nWe greet the exalted one of Morè\nWe greet the beautiful bird of Morè\nThis one that we call Ajé\nAjé who goes round the city at dawn\nShe who browses the edges of the market before sunrise"
+                        }
+                    ]
                 },
                 {
                     id: "aje",
@@ -937,6 +1106,11 @@ const divinityData = {
                             title: "Èjì Alálò",
                             yoruba: "Èjì Alálò\nÈjì agídìmó láwo ìgbẹ̀yìn\nA dífá fún Òrúnmìlà\n\nTí mo bá kú, èṣù Ọ̀dàrà ìgbọ̀rùn ló, Èṣù Ọ̀dàrà\nTí mo bá lọ, ọ̀rùn ló, Èṣù Ọ̀dàrà ó dórùn rẹ, Èṣù Ọ̀dàrà\nTí mo bá ní owó, ó dórùn rẹ, Èṣù Ọ̀dàrà ó dórùn rẹ, Èṣù Ọ̀dàrà\nTí mo bá bí ọmọ, ó dórùn rẹ, Èṣù Ọ̀dàrà ó dórùn rẹ, Èṣù Ọ̀dàrà\nTí mo bá ní ilé, ó dórùn rẹ, Èṣù Ọ̀dàrà ó dórùn rẹ, Èṣù Ọ̀dàrà\nTí mo bá ní ire gbogbo ò dórùn rẹ, Èṣù Ọ̀dàrà ó dórùn rẹ, Èṣù Ọ̀dàrà",
                             english: "Èjì of Alálò\nÈjì Agídìmó is the Ifá priest of Ìgbẹ̀yìn.\nCast divination for Òrúnmìlà while going to make Èṣù Ọ̀dàrà responsible\nfor all his misfortunes:\n\nIf I die, you will be held responsible, Èṣù Ọ̀dàrà you will be held responsible.\n\nIf I remain poor, you will be held responsible, Èṣù Ọ̀dàrà you will be held responsible.\n\nIf I don’t have wife/husband, you will be held responsible, Èṣù Ọ̀dàrà you will be held responsible.\n\nIf I remain childless, you will be held responsible, Èṣù Ọ̀dàrà you will be held responsible.\n\nIf I remain homeless, you will be held responsible, Èṣù Ọ̀dàrà you will be held responsible.\n\nIf I’m not blessed exceedingly, you will be held responsible, Èṣù Ọ̀dàrà you will be held responsible."
+                        },
+                        {
+                            title: "Èṣù, òkìrì òkò",
+                            yoruba: "Èṣù, òkìrì òkò\nÈṣù, pótòróde pẹ̀díra\nÈṣù, ota Òrìṣà\nÒlágòbòkùn\nAlágbará\nỌmọkùnrin dídú ita\nBàbá kékeré\nÈṣù Òdàrà, ọmọkùnrin Idọ̀lòfìn\nÓ lè ṣọ́nsọ́ ṣ’ọ́rẹ́ èṣé ẹlẹ́ṣé\nKò je, kò sì jẹ kí ẹ̀míjẹ gbejì mi\nA fi ọ̀kúta dípọ̀ iyò\nÓ fi ẹ̀yà jẹ ìrònú orúkọ bàbá mó gé\nAlágògojọ̀ ni ìkà orúkọ yá n pé e\nÒ dà sókòtò pẹ̀ńpẹ̀ le aláṣọ eti ní’fiyà\nÀ ṣe kọ̀ọ̀ má ṣe\nÁ s’òtún, s’òsì láì ní’ìjú\nA tó kó má ṣe ẹ̀ṣà\nAklínlógan\nAkánlé\nPàá pàá wárà\nAr’ókò ká’dè\nEréjà\nTàṣìnkàn\nÈṣù, olálití\nẸni tí ṣe ẹbọ nít orí Èṣù ngbè\nÒbèmbe ń jó\nLágemo ọ̀run\nÀ kìí r’ówo là mú tí Èṣù kúrò\nÀ kìí r’ayò lá mú tí Èṣù kúrò\nÀ kìí ṣe ohun rere lá mú tí Èṣù kúrò\nÈṣù, mo jíìbà o\nÈṣù, má ṣe mí\nẸni tí kò ṣe ẹbọ ni kò ṣe.",
+                            english: "Èṣù, wanderer of the road\nÈṣù, carrier of the stone\nÈṣù, adversary of the Òrìṣà\nThe one with the long warrior bag\nThe powerful one\nThe dark-skinned man of the outside\nThe small father (the revered small elder)\nÈṣù Òdàrà, son of the Idọ̀lòfìn lineage\nHe who can reconcile friends and enemies\nHe who does not allow what is forbidden to enter my life\nHe ties stones together like salt (symbol of binding power)\nHe who turns a father’s name into a sharp instrument\nThe clever one who answers any name\nHe who slaps the careless wearer of trousers\nDo not do wrong\nHe goes right, he goes left without shame\nOne who arranges but does not commit a crime\nAklínlógan — The quick-thinking one\nAkánlé — The brave one\nHe moves swiftly\nHe gathers what is around the homestead\nHe is the trader\nHe is the one whose blessings come suddenly\nÈṣù, the prosperous one\nThe one whose rituals are not in vain\nThe drummer dances\nThe heavenly dancer\nYou cannot carry wealth if Èṣù withdraws from you\nYou cannot carry joy if Èṣù withdraws from you\nNothing good can be carried if Èṣù withdraws from you\nÈṣù, I salute you\nÈṣù, do not harm me\nThe one who does not make offering is the one that Èṣù will not support."
                         }
                     ]
                 },
@@ -1019,6 +1193,11 @@ const divinityData = {
                             title: "Agbọ́ngbọ̀n mọ̀rọ̀",
                             yoruba: "Agbọ́ngbọ̀n mọ̀rọ̀\nAgbọ́ngbọ̀n mọ̀rọ̀\nÒgbón inú Ẹ̀gbárà ni ó jẹ́ kí Ẹ̀gbárà ó kòlà bí Àkòṣin\nA dífá fún Òrúnmìlà yóò kẹ̀yìn kó tó dé\nÓ gbọ́n ju gbogbo Ìrúnmọlẹ̀ tó kù lọ\n\nAgbọ́ngbọ̀n mọ̀rọ̀\nAgbọ́ngbọ̀n mọ̀rọ̀\nỌgbọ́n inú ọmọ níí rán ọmọ lọ ẹ̀yìn òdì\nỌ̀fún ìmọ̀ràn níí yàn ìmọ̀ràn lérò\nÌmọ̀ràn àmójú, kí ma pọ̀nà pẹ̀lú, ẹnu ní yọ̀nì\nA dífá fún Òrúnmìlà\nLójú ìfì Olódùmarè yóò kọ̀ ọkùn ògbón lé ẹ̀ koẉọ̀",
                             english: "It is one’s intelligence that sets one on a journey.\nA wise person makes good use of his/her intelligence.\nToo much wisdom and ability to tackle ambiguity can create a lot of problem.\nCast divination for Òrúnmìlà\nWhen God was to endow him with abundant wisdom.\n\nOlódùmarè was ready to send Òrúnmìlà to earth.\nHe summoned Òrúnmìlà and gave him sixteen gourds of wisdom to swallow.\nWhile Òrúnmìlà was swallowing them, the biggest of the gourds dropped and broke into pieces.\nOlódùmarè instructed Òrúnmìlà to pick the broken pieces and scrape the floor for residue and swallow everything.\nÒrúnmìlà did as instructed.\n\nThereafter, Olódùmarè told him that since he had swallowed wisdom in its entirety, wisdom would endure with him spiritually in all affairs of life, and he would be able to see beyond all his peers in spiritual matters.\n\nAfter seven days of acquiring this power, Òrúnmìlà was able to see and know everything that happened in the past, things that were happening then, and things that were still to happen on earth.\nThis power to see the past, the present and the future is inherent in Ifá till date.\n\nWhen other divinities heard about Òrúnmìlà’s wisdom, they inquired where he had gotten it.\nÈṣù told them that it was Olódùmarè who gave him sixteen gourds of wisdom to swallow, but one broke."
+                        },
+                        {
+                            title: "Bara Petu",
+                            yoruba: "Bara Petu\nBàbá ti kékeré Òkè Ìgètí\nÈlẹ̀pìnlọ̀run\nÌkìlẹ́jì Olódùmarè\nÒrìṣà tí ó fi gbogbo ayé fi ojú oròní ṣàtápátà\nÀ bi ara fún bi ajere\nÒrìṣà tí ngbé nkan ọlẹ̀ gùn\nÒrìṣà tí ó nderézà laso fún aláìlera\nFágúnwà, ọkọ Ọ̀yẹ́kú\nFágúnwà, ọkùnrin Ọ̀yẹ́kú\nÒrúnmìlà, ò bẹ̀ mí mà rú\nBàbá Ẹ̀ṣù Òdàrà\nÒrìṣà tí ngbà ní’íwọ̀ eni tí ó ní’làkà ńfún\nBàbá àkéré-fi-iní-se-ọgbọ́n\nỌ̀pítàn Ifá\nAdífá inú odè\nÓdùdu tí ó orí Ilémèrè kí ó ní Ilémèrè má bà a fọ́\nÀ tún orí ènì tí kò súnwọ̀n ṣe\nFòrírun òwú kan soṣo\nA jẹ́ jí ògùn\nOpókó à mí ìde ṣòji\nBàbá Àgbonnìrègún\nArá l’wọ́nran ní ibi tí ojú rere tí n mọ́ wá\nBàbá eléran púpọ̀ kó gbàdọ̀ ijẹ́ adùn\nBàbá eléran púpọ̀ kó gbòdù je ẹran tó t’ó lẹ́gun\nÀ yó t’éérè gb’árá ṣán’ilé, má fi ara pa\nA s’òrò d’ayé\nKá rí ọ̀mọdé kó l’á à la\nÒnìlé Orí Ọdù Mèrìndínlọ́gbọ̀n\nỌnàl’ léfò nkúrò nínú àfòpin ẹ̀yà\nS’ayé’ s’òrun Ibìn\nÀjà pa oju ókú ní da\nBàbá mi Àgbonnìrègún, a tó fi ara tí b’ókè\nÀ tó fi ara b’ókè\nỌ̀gẹ̀gẹ̀, a gbà’ yẹ́ gùn\nÀfínfẹ́ l’ọba fún\nAmọ̀ mí mọ̀ tán\nỌ̀mọ adó bàbá tí f’ w’ẹ̀wù ògùn\nÀdó bàbá ẹni pẹ̀lú òṣùdí aláṣe\nÀjàànà, etí tí m’óri ẹkìn l’ṣọ́gbọ̀ ṣùuru ṣùuru\nÒrìṣà oko ajẹ́\nOlogbọ̀ yẹ̀ gùn\nỌ̀jọ̀lugbèdù ọ̀run\nOnir’ọpọ̣̀fún nyìn\nAṣíjútù má kánná\nBàbá a f’ẹ̀dè r’ẹ̀pọ̀\nA yẹ́ tó sọ̀rọ̀ l’ẹ̣sẹ̀\nÈdá Ọ̀lújà Ọ̀bìjọbo\nỌ̀pọ̀ a tán ọmọ dà bí ẹ̀wù\nÒkùnrin a t’eyin ènì nì fì fífọn\nIkú dúdú àtẹ̀wò\nỌ̀rọ̀, à jè’̣ pọ̀ má pọ̀-ọn\nẸ̀gbàlà\nÌbà tọ́ tọ́ tọ́.",
+                            english: "Bara Petu\nFather who is elder of the hill of Ìgètí\nThe slender one of heaven\nSecond-in-command to Olódùmarè\nThe divinity who surveys the whole world with eyes of wisdom\nThe one whose body is as light as a sieve\nThe divinity who makes difficult things easy\nThe divinity who smooths the way for the helpless\nFágúnwà, husband of Ọ̀yẹ́kú\nFágúnwà, man of Ọ̀yẹ́kú\nÒrúnmìlà, do not abandon me\nFather of Ẹ̀ṣù Òdàrà\nThe divinity who supports whoever is truthful\nFather who uses small things to perform wisdom\nThe historian of Ifá\nThe priest who casts divination in the wilderness\nThe one whose head guards the Ilémèrè fruit from breaking\nThe one who repairs the destiny of the difficult person\nThe one who ties destiny with a single thread of cotton\nThe eater who consumes twenty medicines at dawn\nStrong man who wakes with the brass crown\nFather of Àgbonnìrègún\nThe one whom good fortune meets wherever he goes\nFather who owns abundant meat and"
                         }
                     ]
                 },
