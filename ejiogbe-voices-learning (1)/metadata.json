@@ -1,0 +1,7 @@
+{
+  "name": "Ejiogbe Voices Learning",
+  "description": "An AI-powered language learning suite featuring real-time roleplay tutoring, pronunciation coaching, and contextual translation.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
