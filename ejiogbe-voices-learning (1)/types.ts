@@ -5,7 +5,9 @@ export enum AppMode {
   LIVE = 'LIVE',
   TRANSLATE = 'TRANSLATE',
   NOTEBOOK = 'NOTEBOOK',
-  FLASHCARDS = 'FLASHCARDS'
+  FLASHCARDS = 'FLASHCARDS',
+  ALPHABETS = 'ALPHABETS',
+  QUIZZES = 'QUIZZES'
 }
 
 export interface Message {
@@ -25,13 +27,11 @@ export interface SavedItem {
   id: string;
   type: 'vocabulary' | 'pronunciation';
   timestamp: number;
-  // Vocabulary Fields
   sourceText?: string;
   translatedText?: string;
   sourceLang?: string;
   targetLang?: string;
-  tags?: string[]; // e.g., 'Formal', 'General'
-  // Pronunciation Fields
+  tags?: string[];
   phrase?: string;
   score?: number;
   correction?: {
@@ -67,9 +67,33 @@ export interface SessionLog {
   category: string;
   averageScore: number;
   feedbackCount: number;
+  xpGained?: number;
 }
 
 export interface Flashcard {
   front: string;
   back: string;
+}
+
+// Quiz Types
+export type QuizType = 
+  | 'multiple_choice' 
+  | 'word_scramble' 
+  | 'matching' 
+  | 'fill_blanks' 
+  | 'odd_one_out' 
+  | 'synonym_pair' 
+  | 'translation_blitz'
+  | 'scenario_choice'
+  | 'true_false';
+
+export interface QuizActivity {
+  id: string;
+  type: QuizType;
+  question: string;
+  context?: string;
+  options?: string[]; // For MC, Scramble, OddOneOut
+  pairs?: { left: string; right: string }[]; // For Matching
+  answer: string | string[];
+  explanation: string;
 }
