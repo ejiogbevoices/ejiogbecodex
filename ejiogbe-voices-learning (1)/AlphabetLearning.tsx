@@ -1,22 +1,13 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI, Modality, Type } from '@google/genai';
-import { Eraser, Info, Sparkles, Loader2, RefreshCw, PenTool, CheckCircle, BookOpen, Volume2, Activity, Play, MousePointer2, AlertCircle } from 'lucide-react';
+import { Eraser, Info, Sparkles, Loader2, RefreshCw, PenTool, CheckCircle, BookOpen, Volume2, Activity, MousePointer2, AlertCircle } from 'lucide-react';
 import { base64ToUint8Array, decodeAudioData } from '../services/audioUtils';
 
 interface Character {
   symbol: string;
   name: string;
   phonetic: string;
-}
-
-interface StrokePoint {
-  x: number;
-  y: number;
-}
-
-interface StrokeData {
-  strokes: StrokePoint[][];
 }
 
 const ALPHABETS: Record<string, Character[]> = {
@@ -84,17 +75,14 @@ const AlphabetLearning: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isGeneratingGuide, setIsGeneratingGuide] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [strokeGuide, setStrokeGuide] = useState<string | null>(null);
-  const [strokeData, setStrokeData] = useState<StrokeData | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
-  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -116,9 +104,6 @@ const AlphabetLearning: React.FC = () => {
     if (selectedChar) {
       fetchStrokeResources();
     }
-    return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
   }, [selectedChar]);
 
   const fetchStrokeResources = async () => {
@@ -126,128 +111,47 @@ const AlphabetLearning: React.FC = () => {
     setIsGeneratingGuide(true);
     setError(null);
     setStrokeGuide(null);
-    setStrokeData(null);
     
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       
-      // Upgrade to Gemini 3 Pro for complex coordinate tasks
       const response = await ai.models.generateContent({
-        model: 'gemini-3-pro-preview',
-        contents: `You are a script specialist. Provide drawing data for the character "${selectedChar.symbol}" (${selectedChar.name}) from ${selectedAlphabet}.
+        model: 'gemini-3-flash-preview',
+        contents: `You are a Typography Specialist. Provide exactly 3 clear writing steps for the character "${selectedChar.symbol}" from the ${selectedAlphabet} script.
         
-        Requirements:
-        1. A 3-step text guide for writing it.
-        2. A set of SVG-style path coordinates. 
-        3. Coordinates MUST be within a 400x400 box.
-        4. Focus on simple, clean lines (minimalist vector path).
+        IMPORTANT:
+        - Analyze the actual anatomy of "${selectedChar.symbol}".
+        - Provide simple, direct physical instructions (e.g., "Draw a curve from left to right").
+        - Each step should be on a new line starting with "Step X:".
         
-        Return exactly this JSON:
+        Return JSON:
         {
-          "guide": "Step 1...\\nStep 2...\\nStep 3...",
-          "strokes": [
-            [{"x": number, "y": number}, {"x": number, "y": number}],
-            ...
-          ]
+          "guide": "Step 1: ...\\nStep 2: ...\\nStep 3: ..."
         }`,
         config: {
           responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
             properties: {
-              guide: { type: Type.STRING },
-              strokes: {
-                type: Type.ARRAY,
-                items: {
-                  type: Type.ARRAY,
-                  items: {
-                    type: Type.OBJECT,
-                    properties: {
-                      x: { type: Type.NUMBER },
-                      y: { type: Type.NUMBER }
-                    },
-                    required: ['x', 'y']
-                  }
-                }
-              }
+              guide: { type: Type.STRING }
             },
-            required: ['guide', 'strokes']
+            required: ['guide']
           }
         }
       });
 
       const data = JSON.parse(response.text);
-      if (data && data.strokes && Array.isArray(data.strokes)) {
+      if (data && data.guide) {
         setStrokeGuide(data.guide);
-        setStrokeData({ strokes: data.strokes });
       } else {
-        throw new Error("Invalid stroke data format");
+        throw new Error("Master provided incomplete guide data.");
       }
     } catch (e) {
-      console.error("Failed to fetch stroke data:", e);
-      setError("Unable to load drawing guide. Please try another character.");
-      setStrokeGuide("Focus on the primary curves and balanced lines.");
+      console.error("Guide fetch error:", e);
+      setError("Unable to retrieve writing guide. Please try again.");
     } finally {
       setIsGeneratingGuide(false);
     }
-  };
-
-  const playStrokeAnimation = () => {
-    if (!strokeData || !ctxRef.current || !canvasRef.current || isAnimating) return;
-    
-    const canvas = canvasRef.current;
-    const ctx = ctxRef.current;
-    setIsAnimating(true);
-    clearCanvas();
-
-    const scaleX = canvas.width / 400;
-    const scaleY = canvas.height / 400;
-
-    let strokeIndex = 0;
-    let pointIndex = 0;
-
-    const animate = () => {
-      if (strokeIndex >= strokeData.strokes.length) {
-        setIsAnimating(false);
-        return;
-      }
-
-      const currentStroke = strokeData.strokes[strokeIndex];
-      if (pointIndex >= currentStroke.length) {
-        strokeIndex++;
-        pointIndex = 0;
-        animationRef.current = requestAnimationFrame(animate);
-        return;
-      }
-
-      const point = currentStroke[pointIndex];
-      const x = point.x * scaleX;
-      const y = point.y * scaleY;
-
-      ctx.strokeStyle = '#22d3ee';
-      ctx.lineWidth = 10;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-
-      if (pointIndex === 0) {
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-      } else {
-        const prevPoint = currentStroke[pointIndex - 1];
-        ctx.beginPath();
-        ctx.moveTo(prevPoint.x * scaleX, prevPoint.y * scaleY);
-        ctx.lineTo(x, y);
-        ctx.stroke();
-      }
-
-      pointIndex++;
-      // Constant delay for predictable animation speed
-      setTimeout(() => {
-        animationRef.current = requestAnimationFrame(animate);
-      }, 25);
-    };
-
-    animationRef.current = requestAnimationFrame(animate);
   };
 
   const playPronunciation = async () => {
@@ -255,8 +159,17 @@ const AlphabetLearning: React.FC = () => {
     
     setIsAudioPlaying(true);
     try {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
+      }
+      const ctx = audioContextRef.current;
+      
+      if (ctx.state === 'suspended') {
+        await ctx.resume();
+      }
+
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const prompt = `Pronounce the character "${selectedChar.symbol}" from the ${selectedAlphabet} script. Its name is "${selectedChar.name}". Say it clearly and naturally.`;
+      const prompt = `Clearly pronounce: "${selectedChar.symbol}" (${selectedChar.name}) in ${selectedAlphabet}. Native accent.`;
       
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-preview-tts',
@@ -273,16 +186,6 @@ const AlphabetLearning: React.FC = () => {
 
       const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
       if (base64Audio) {
-        if (!audioContextRef.current) {
-          audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
-        }
-        const ctx = audioContextRef.current;
-        
-        // Critical: Resume AudioContext (browsers often suspend it)
-        if (ctx.state === 'suspended') {
-          await ctx.resume();
-        }
-
         const audioBuffer = await decodeAudioData(base64ToUint8Array(base64Audio), ctx, 24000, 1);
         const source = ctx.createBufferSource();
         source.buffer = audioBuffer;
@@ -290,16 +193,15 @@ const AlphabetLearning: React.FC = () => {
         source.onended = () => setIsAudioPlaying(false);
         source.start();
       } else {
-        throw new Error("No audio data received");
+        throw new Error("No audio payload received.");
       }
     } catch (error) {
-      console.error('Pronunciation failed:', error);
+      console.error('Audio failure:', error);
       setIsAudioPlaying(false);
     }
   };
 
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
-    if (isAnimating) return;
     setIsDrawing(true);
     const pos = getPos(e);
     ctxRef.current?.beginPath();
@@ -307,7 +209,7 @@ const AlphabetLearning: React.FC = () => {
   };
 
   const draw = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDrawing || isAnimating) return;
+    if (!isDrawing) return;
     const pos = getPos(e);
     ctxRef.current?.lineTo(pos.x, pos.y);
     ctxRef.current?.stroke();
@@ -359,15 +261,15 @@ const AlphabetLearning: React.FC = () => {
             }
           },
           {
-            text: `Analyze this user drawing of "${selectedChar.symbol}" (${selectedChar.name}) in ${selectedAlphabet}. Provide a short feedback paragraph judging accuracy, stroke confidence, and proportions. Persona: Calligraphy Master.`
+            text: `Review this hand-drawn "${selectedChar.symbol}" (${selectedChar.name}). Does it follow the correct writing steps? Give 1-2 encouraging sentences of feedback.`
           }
         ]
       });
 
-      setFeedback(response.text || "Your lines are finding their form.");
+      setFeedback(response.text || "Your hand is growing steady.");
     } catch (err) {
       console.error("Analysis failed:", err);
-      setFeedback("Focus on the essence of the stroke and try again.");
+      setFeedback("Keep practicing to perfect the flow.");
     } finally {
       setIsAnalyzing(false);
     }
@@ -378,9 +280,9 @@ const AlphabetLearning: React.FC = () => {
       
       {/* Sidebar: Character Chart */}
       <div className="w-full lg:w-1/3 bg-slate-800/40 backdrop-blur-xl rounded-3xl border border-slate-700 p-6 flex flex-col h-fit lg:sticky lg:top-24">
-        <div className="flex items-center gap-3 mb-6">
-           <BookOpen className="w-6 h-6 text-cyan-400" />
-           <h3 className="text-xl font-serif font-bold text-white tracking-wide">Script Chart</h3>
+        <div className="flex items-center gap-3 mb-6 text-cyan-400">
+           <BookOpen className="w-6 h-6" />
+           <h3 className="text-xl font-serif font-bold text-white tracking-wide">Sacred Scripts</h3>
         </div>
 
         <select 
@@ -405,7 +307,7 @@ const AlphabetLearning: React.FC = () => {
               className={`
                 aspect-square rounded-2xl border-2 flex flex-col items-center justify-center transition-all group
                 ${selectedChar?.symbol === char.symbol 
-                  ? 'bg-cyan-500/20 border-cyan-500 shadow-lg shadow-cyan-950/20' 
+                  ? 'bg-cyan-500/20 border-cyan-500 shadow-lg shadow-cyan-950/20 scale-105' 
                   : 'bg-slate-900/50 border-slate-700 hover:border-slate-500'}
               `}
             >
@@ -417,7 +319,7 @@ const AlphabetLearning: React.FC = () => {
         
         <div className="mt-8 pt-6 border-t border-slate-700/50 text-center">
            <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em]">
-              {ALPHABETS[selectedAlphabet].length} Characters Loaded
+              Heritage Preservation Protocol
            </p>
         </div>
       </div>
@@ -430,7 +332,7 @@ const AlphabetLearning: React.FC = () => {
              {/* Header */}
              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-6">
-                    <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-inner">
+                    <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-2xl">
                         <span className="text-4xl text-white">{selectedChar.symbol}</span>
                     </div>
                     <div>
@@ -445,40 +347,30 @@ const AlphabetLearning: React.FC = () => {
                                 className={`
                                     flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest transition-all
                                     ${isAudioPlaying 
-                                        ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
+                                        ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 shadow-[0_0_10px_rgba(34,211,238,0.2)]' 
                                         : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-cyan-400 border border-slate-700'}
                                 `}
                             >
                                 {isAudioPlaying ? <Loader2 className="w-3 h-3 animate-spin" /> : <Volume2 className="w-3 h-3" />}
-                                <span>{isAudioPlaying ? 'Playing' : 'Listen'}</span>
+                                <span>{isAudioPlaying ? 'Chanting' : 'Listen'}</span>
                             </button>
                         </div>
                     </div>
                 </div>
                 <div className="flex items-center gap-2 self-start sm:self-auto px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-indigo-400 shadow-sm">
-                   <Activity className="w-4 h-4" />
-                   <span className="text-[10px] font-black uppercase tracking-widest">Interactive Lesson</span>
+                   <Activity className="w-4 h-4 animate-pulse" />
+                   <span className="text-[10px] font-black uppercase tracking-widest">Master Session Active</span>
                 </div>
              </div>
 
              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
                 
-                {/* Section C: Stroke Order Video/Animation & Practice */}
+                {/* Section C: Writing Guide & Practice */}
                 <div className="flex flex-col gap-6">
                    <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700 rounded-3xl p-6 space-y-4">
-                      <div className="flex items-center justify-between border-b border-slate-700/50 pb-4">
-                        <div className="flex items-center gap-3">
-                           <Info className="w-5 h-5 text-cyan-400" />
-                           <h4 className="font-bold text-slate-200 uppercase text-xs tracking-widest">Learn to Write</h4>
-                        </div>
-                        <button 
-                          onClick={playStrokeAnimation}
-                          disabled={isAnimating || !strokeData}
-                          className="flex items-center gap-2 px-3 py-1 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-800 disabled:text-slate-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest transition-all"
-                        >
-                          {isAnimating ? <Loader2 className="w-3 h-3 animate-spin" /> : <Play className="w-3 h-3 fill-current" />}
-                          Watch Stroke Animation
-                        </button>
+                      <div className="flex items-center gap-3 border-b border-slate-700/50 pb-4">
+                         <Info className="w-5 h-5 text-cyan-400" />
+                         <h4 className="font-bold text-slate-200 uppercase text-xs tracking-widest">Writing Steps</h4>
                       </div>
                       
                       {error && (
@@ -489,19 +381,21 @@ const AlphabetLearning: React.FC = () => {
                       )}
 
                       {isGeneratingGuide ? (
-                         <div className="flex items-center gap-3 text-slate-500 py-4">
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            <span className="text-sm italic">Master is demonstrating strokes...</span>
+                         <div className="flex flex-col gap-3 py-4">
+                            <div className="flex items-center gap-3 text-slate-500">
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <span className="text-sm italic font-serif">Generating steps...</span>
+                            </div>
                          </div>
                       ) : (
                          <div className="space-y-4 py-2">
                              {strokeGuide?.split('\n').filter(s => s.trim()).map((step, idx) => (
                                 <div key={idx} className="flex items-start gap-4 group animate-in slide-in-from-left-2" style={{ animationDelay: `${idx * 150}ms` }}>
-                                   <div className="w-6 h-6 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[10px] font-bold text-cyan-400 group-hover:border-cyan-500/50 transition-colors">
+                                   <div className="w-6 h-6 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[10px] font-bold text-cyan-400 group-hover:border-cyan-500/50 transition-colors shadow-inner">
                                       {idx + 1}
                                    </div>
                                    <p className="text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors">
-                                      {step.replace(/^\d+\.\s*/, '')}
+                                      {step.replace(/^\d+\.\s*/, '').replace(/^Step \d+:\s*/i, '')}
                                    </p>
                                 </div>
                              ))}
@@ -513,17 +407,17 @@ const AlphabetLearning: React.FC = () => {
                       <div className="flex justify-between items-center px-1">
                          <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
                             <PenTool className="w-3.5 h-3.5" />
-                            Practice Tool (Trace below)
+                            Practice Pad
                          </label>
                          <button 
                            onClick={clearCanvas}
-                           className="text-[10px] font-black text-slate-500 hover:text-rose-400 flex items-center gap-1.5 transition-colors uppercase tracking-widest"
+                           className="text-[10px] font-black text-slate-500 hover:text-rose-400 flex items-center gap-1.5 transition-colors uppercase tracking-widest active:scale-95"
                          >
                             <Eraser className="w-3.5 h-3.5" />
-                            Reset Pad
+                            Clear Pad
                          </button>
                       </div>
-                      <div className="relative aspect-square w-full max-w-[400px] bg-slate-900/80 border-2 border-slate-700 rounded-3xl overflow-hidden shadow-2xl group mx-auto xl:mx-0">
+                      <div className="relative aspect-square w-full max-w-[400px] bg-slate-900 border-2 border-slate-700 rounded-3xl overflow-hidden shadow-2xl group mx-auto xl:mx-0">
                          <canvas
                            ref={canvasRef}
                            onMouseDown={startDrawing}
@@ -533,31 +427,24 @@ const AlphabetLearning: React.FC = () => {
                            onTouchStart={startDrawing}
                            onTouchMove={draw}
                            onTouchEnd={stopDrawing}
-                           className={`w-full h-full touch-none ${isAnimating ? 'cursor-wait' : 'cursor-crosshair'}`}
+                           className="w-full h-full touch-none cursor-crosshair"
                          />
                          
                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none">
-                            <span className="text-[220px]">{selectedChar.symbol}</span>
+                            <span className="text-[240px] font-serif">{selectedChar.symbol}</span>
                          </div>
-                         
-                         {isAnimating && (
-                            <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur border border-cyan-500/30 px-3 py-1.5 rounded-full flex items-center gap-2 text-[10px] font-black text-cyan-400 uppercase tracking-widest animate-pulse">
-                              <MousePointer2 className="w-3 h-3" />
-                              Watch the Master...
-                            </div>
-                         )}
                       </div>
                       
                       <button
                        onClick={analyzeDrawing}
-                       disabled={isAnalyzing || isAnimating}
+                       disabled={isAnalyzing}
                        className={`
                            w-full max-w-[400px] mx-auto xl:mx-0 py-4 rounded-2xl font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 transition-all
-                           ${isAnalyzing || isAnimating ? 'bg-slate-700 text-slate-500 cursor-wait' : 'bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-900/20 active:scale-95'}
+                           ${isAnalyzing ? 'bg-slate-700 text-slate-500 cursor-wait' : 'bg-cyan-600 hover:bg-cyan-500 text-white shadow-xl shadow-cyan-900/30 active:scale-[0.98]'}
                        `}
                       >
                          {isAnalyzing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
-                         <span>{isAnalyzing ? 'Seeking Truth...' : 'Submit for Feedback'}</span>
+                         <span>{isAnalyzing ? 'Evaluating...' : 'Submit to Master'}</span>
                       </button>
                    </div>
                 </div>
@@ -566,44 +453,44 @@ const AlphabetLearning: React.FC = () => {
                 <div className="space-y-6">
                    <div className="bg-slate-800/20 backdrop-blur border border-slate-700/50 rounded-3xl p-8 h-fit flex flex-col items-center text-center">
                       <div className="relative group">
-                        <div className="w-32 h-32 rounded-3xl bg-slate-900 border-2 border-slate-700 flex items-center justify-center mb-6 shadow-inner transition-transform hover:rotate-3 duration-500">
+                        <div className="w-32 h-32 rounded-3xl bg-slate-900 border-2 border-slate-700 flex items-center justify-center mb-6 shadow-inner transition-transform hover:scale-105 duration-500 cursor-default">
                            <span className="text-7xl text-white">{selectedChar.symbol}</span>
                         </div>
                         <button 
                             onClick={playPronunciation}
-                            className="absolute -bottom-2 -right-2 p-2 bg-cyan-600 rounded-xl text-white shadow-lg hover:bg-cyan-500 transition-colors"
+                            className="absolute -bottom-2 -right-2 p-2.5 bg-cyan-600 rounded-xl text-white shadow-lg hover:bg-cyan-500 transition-colors active:scale-90"
                         >
                             <Volume2 className="w-4 h-4" />
                         </button>
                       </div>
-                      <h4 className="text-xl font-serif font-bold text-slate-200 mb-3">Symbol Origin</h4>
+                      <h4 className="text-xl font-serif font-bold text-slate-200 mb-3">Lineage of {selectedChar.name}</h4>
                       <p className="text-sm text-slate-400 leading-relaxed font-light">
-                        The script of {selectedAlphabet.split('(')[0]} carries the weight of history. Each curve and line in "{selectedChar.name}" has been preserved through generations of scholars.
+                        Follow the steps provided to master the geometry of this character. This phonetic vibration is key to unlocking ancestral wisdom.
                       </p>
                    </div>
 
                    {feedback && (
-                      <div className="bg-cyan-950/20 border border-cyan-500/20 rounded-3xl p-6 animate-in slide-in-from-bottom-2 duration-500 shadow-[0_0_20px_rgba(34,211,238,0.05)]">
+                      <div className="bg-cyan-950/20 border border-cyan-500/20 rounded-3xl p-6 animate-in slide-in-from-bottom-2 duration-500 shadow-[0_0_20px_rgba(34,211,238,0.1)]">
                          <div className="flex items-center gap-3 mb-4">
                             <div className="p-2 bg-cyan-500/10 rounded-xl">
                                <CheckCircle className="w-5 h-5 text-cyan-400" />
                             </div>
-                            <h4 className="font-black text-cyan-200 uppercase text-[10px] tracking-[0.2em]">Master's Analysis</h4>
+                            <h4 className="font-black text-cyan-200 uppercase text-[10px] tracking-[0.2em]">Master's Verdict</h4>
                          </div>
-                         <p className="text-cyan-50 font-serif text-xl leading-relaxed">
+                         <p className="text-cyan-50 font-serif text-xl leading-relaxed italic">
                             "{feedback}"
                          </p>
                       </div>
                    )}
                    
                    {!feedback && !isAnalyzing && (
-                      <div className="bg-slate-900/40 border border-dashed border-slate-700 rounded-3xl p-10 flex flex-col items-center justify-center text-center space-y-4 h-48">
-                         <div className="p-3 bg-slate-800/50 rounded-2xl">
+                      <div className="bg-slate-900/40 border border-dashed border-slate-700 rounded-3xl p-10 flex flex-col items-center justify-center text-center space-y-4 h-48 group hover:bg-slate-900/60 transition-colors">
+                         <div className="p-3 bg-slate-800/50 rounded-2xl group-hover:scale-110 transition-transform">
                             <RefreshCw className="w-8 h-8 text-slate-700" />
                          </div>
                          <div>
-                            <h5 className="text-slate-500 font-black text-[10px] uppercase tracking-[0.2em] mb-1">Awaiting Trace</h5>
-                            <p className="text-slate-600 text-xs">Watch the animation above, then practice on the pad.</p>
+                            <h5 className="text-slate-500 font-black text-[10px] uppercase tracking-[0.2em] mb-1">Awaiting Practice</h5>
+                            <p className="text-slate-600 text-xs">Read the steps, then replicate below.</p>
                          </div>
                       </div>
                    )}
@@ -617,20 +504,14 @@ const AlphabetLearning: React.FC = () => {
                 <Sparkles className="w-10 h-10 text-slate-700 group-hover:text-cyan-400 transition-colors animate-pulse" />
              </div>
              <div className="space-y-3">
-                <h3 className="text-3xl font-serif font-bold text-slate-400">Master Rare Scripts</h3>
-                <p className="text-slate-600 max-w-sm leading-relaxed">
-                   Select a character from the chart to begin your "Learn to Write" session and watch how to draw it correctly.
+                <h3 className="text-3xl font-serif font-bold text-slate-400 tracking-tight">Master Ancient Scripts</h3>
+                <p className="text-slate-600 max-w-sm leading-relaxed text-sm">
+                   Select a character from the script chart to begin your initiation.
                 </p>
-             </div>
-             <div className="flex gap-2">
-                <div className="w-1 h-1 rounded-full bg-slate-800"></div>
-                <div className="w-1 h-1 rounded-full bg-slate-800"></div>
-                <div className="w-1 h-1 rounded-full bg-slate-800"></div>
              </div>
           </div>
         )}
       </div>
-
     </div>
   );
 };
