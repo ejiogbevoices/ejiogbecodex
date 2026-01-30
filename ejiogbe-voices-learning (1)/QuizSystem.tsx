@@ -24,6 +24,7 @@ const QuizSystem: React.FC = () => {
   const [streak, setStreak] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [startTime, setStartTime] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
   
   // Interaction State
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -40,6 +41,7 @@ const QuizSystem: React.FC = () => {
     if (!topic.trim() || isGenerating) return;
     
     setIsGenerating(true);
+    setError(null);
     setShowResults(false);
     setActivities([]);
     setCurrentIndex(0);
@@ -58,13 +60,13 @@ const QuizSystem: React.FC = () => {
       1. Vary the types significantly. Use a mix of: multiple_choice, word_scramble, matching, fill_blanks, odd_one_out, and true_false.
       2. For 'matching', provide exactly 4 pairs.
       3. For 'word_scramble', Provide the sentence in the 'options' array as a list of words.
-      4. Ensure linguistic accuracy. 
+      4. Ensure linguistic accuracy in ${targetLang}. 
       5. Provide clear context and explanations for each answer.
       
       Output exactly a JSON object with an 'activities' array.`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-3-pro-preview',
         contents: prompt,
         config: {
           responseMimeType: 'application/json',
@@ -104,10 +106,14 @@ const QuizSystem: React.FC = () => {
       });
 
       const data = JSON.parse(response.text);
+      if (!data.activities || data.activities.length === 0) {
+        throw new Error("No activities generated.");
+      }
       setActivities(data.activities);
       setStartTime(Date.now());
-    } catch (error) {
-      console.error("Quiz generation failed", error);
+    } catch (err: any) {
+      console.error("Quiz generation failed", err);
+      setError(err.message || "Failed to generate lesson. Please try a different topic or language.");
     } finally {
       setIsGenerating(false);
     }
@@ -138,7 +144,6 @@ const QuizSystem: React.FC = () => {
       
       const existingLogs = JSON.parse(localStorage.getItem('ejiogbe_sessions') || '[]');
       localStorage.setItem('ejiogbe_sessions', JSON.stringify([log, ...existingLogs]));
-      // Dispatch storage event to update other tabs like Notebook
       window.dispatchEvent(new Event('storage'));
     } catch (e) {
       console.error("Failed to persist quiz results", e);
@@ -151,12 +156,11 @@ const QuizSystem: React.FC = () => {
     if (side === 'left') {
       setActiveLeft(value);
     } else if (side === 'right' && activeLeft) {
-      // Create or update match
       setUserMatches(prev => ({
         ...prev,
         [activeLeft]: value
       }));
-      setActiveLeft(null); // Reset selection after pairing
+      setActiveLeft(null);
     }
   };
 
@@ -173,7 +177,6 @@ const QuizSystem: React.FC = () => {
     } else if (activity.type === 'word_scramble') {
       correct = inputText.trim().toLowerCase() === (activity.answer as string).toLowerCase();
     } else if (activity.type === 'matching' && activity.pairs) {
-      // Check if every pair from ground truth exists in userMatches
       const totalPairs = activity.pairs.length;
       let matchedCount = 0;
       activity.pairs.forEach(p => {
@@ -203,21 +206,17 @@ const QuizSystem: React.FC = () => {
       setActiveLeft(null);
     } else {
       setShowResults(true);
-      // Persist the session when results are shown
       saveQuizSession(sessionScore);
     }
   };
 
   const currentActivity = activities[currentIndex];
-
-  // Logic to determine if "Check" button should be enabled
   const isMatchingComplete = currentActivity?.type === 'matching' && currentActivity.pairs && Object.keys(userMatches).length === currentActivity.pairs.length;
   const isButtonDisabled = !selectedOption && !inputText.trim() && !isMatchingComplete && !isAnswered;
 
   return (
     <div className="max-w-4xl mx-auto w-full space-y-8 pb-20">
       
-      {/* 1. Header Config */}
       <div className="bg-slate-800/40 backdrop-blur-xl border border-slate-700 p-6 rounded-3xl flex flex-col md:flex-row gap-6 items-end">
          <div className="flex-1 space-y-2 w-full">
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 px-1">Target Language</label>
@@ -254,7 +253,16 @@ const QuizSystem: React.FC = () => {
          </button>
       </div>
 
-      {/* 2. Main Quiz Stage */}
+      {error && (
+        <div className="bg-rose-950/20 border border-rose-500/30 rounded-3xl p-6 flex items-start gap-4 animate-in fade-in">
+          <AlertCircle className="w-6 h-6 text-rose-500 flex-shrink-0" />
+          <div>
+            <h4 className="text-rose-200 font-bold uppercase tracking-wider text-sm mb-1">Lesson Error</h4>
+            <p className="text-rose-100/80 text-sm">{error}</p>
+          </div>
+        </div>
+      )}
+
       {isGenerating ? (
         <div className="h-[400px] flex flex-col items-center justify-center space-y-6 text-slate-500 border-2 border-dashed border-slate-800 rounded-[40px]">
            <div className="relative">
@@ -269,7 +277,6 @@ const QuizSystem: React.FC = () => {
       ) : activities.length > 0 && !showResults ? (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
            
-           {/* Progress Bar */}
            <div className="flex items-center gap-4 px-2">
               <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
                  <div 
@@ -286,7 +293,6 @@ const QuizSystem: React.FC = () => {
               </div>
            </div>
 
-           {/* Activity Card */}
            <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700 rounded-[40px] p-8 md:p-12 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 p-8 opacity-5">
                  <LayoutGrid className="w-32 h-32" />
@@ -309,9 +315,7 @@ const QuizSystem: React.FC = () => {
                     )}
                  </div>
 
-                 {/* Activity Templates */}
                  <div className="min-h-[200px]">
-                    {/* Template: Selection (MC, OddOneOut, T/F) */}
                     {(currentActivity.type === 'multiple_choice' || currentActivity.type === 'true_false' || currentActivity.type === 'odd_one_out') && (
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {currentActivity.options?.map((opt, i) => (
@@ -334,7 +338,6 @@ const QuizSystem: React.FC = () => {
                         </div>
                     )}
 
-                    {/* Template: Matching */}
                     {currentActivity.type === 'matching' && (
                         <div className="space-y-4">
                             <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mb-4">Select an item on the left, then its match on the right</p>
@@ -361,7 +364,6 @@ const QuizSystem: React.FC = () => {
                                 </div>
                                 <div className="space-y-3">
                                     {shuffledRights.map((rightVal, i) => {
-                                        // Find which left key this rightVal is currently matched to
                                         const matchedLeft = Object.keys(userMatches).find(key => userMatches[key] === rightVal);
                                         const isLinked = !!matchedLeft;
                                         const isCorrectMatch = isAnswered && currentActivity.pairs?.some(p => p.left === matchedLeft && p.right === rightVal);
@@ -387,7 +389,6 @@ const QuizSystem: React.FC = () => {
                         </div>
                     )}
 
-                    {/* Template: Input (Fill blanks, Scramble) */}
                     {(currentActivity.type === 'fill_blanks' || currentActivity.type === 'word_scramble' || currentActivity.type === 'translation_blitz') && (
                         <div className="space-y-6">
                             {currentActivity.type === 'word_scramble' && (
@@ -409,7 +410,6 @@ const QuizSystem: React.FC = () => {
                     )}
                  </div>
 
-                 {/* Action Bar */}
                  <div className="pt-8 border-t border-slate-700/50 flex flex-col sm:flex-row items-center justify-between gap-6">
                     <div className="flex-1">
                         {isAnswered && (
@@ -492,7 +492,6 @@ const QuizSystem: React.FC = () => {
         </div>
       )}
       
-      {/* 40+ Activity Mode Documentation (Internal for AI reference) */}
       <div className="mt-20 border-t border-slate-800/50 pt-12 text-center space-y-6">
          <div className="flex flex-wrap justify-center gap-6 opacity-30 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700">
             <div className="flex items-center gap-2"><ListOrdered className="w-4 h-4" /> <span className="text-[10px] font-bold uppercase tracking-widest">Sequencing</span></div>
