@@ -1,0 +1,549 @@
+# Fenix Voice Agent Expansion — Final Plan
+
+## What Exists
+
+**Frontend:**
+- `VoiceAssistant.tsx` — floating/inline UI, mic + text input, SSE message display, suggestion buttons
+- `useVoiceAssistantChat` — streaming hook, sends to `/_api/voice-assistant/chat`, tracks messages in state
+- `useAudioQueue` — FIFO TTS queue, calls `/_api/voice-assistant/tts` per chunk, singleton Audio element
+
+**Backend:**
+- `chat_POST.ts` — stateless Gemini call (gemini-3-flash-preview), SSE with `text` + `audio-chunk` events
+- `tts_POST.ts` — Google Cloud TTS, hardcoded `en-US-Neural2-D`, returns MP3
+- `semantic_POST.ts` — cosine distance search across 23 embedded tables
+- `generate_POST.ts` — batch embedding generator (admin)
+- `embeddingGenerator.ts` — `generateEmbedding()` + `generateEmbeddings()` using gemini-embedding-001
+
+**Vector infra:** 23 tables with halfvec(3072), Google embedding API, batch generator on admin page, semantic search tested. Dictionary words (50k across 14 dictionaries) being added as table 24.
+
+**Voice map:** Chirp3-HD for 26 languages, Standard for Hausa/Swahili, fallback mapping for Yoruba/Igbo/Fon/etc. `resolveVoice(langCode)` function ready.
+
+**Existing user data:** `user_vocabulary` table with mastery_level (0-5) and next_review_at for spaced repetition. `monthly_usage` tracking ai_learning_lab. InteractiveWord/WordPopover for tap-to-translate on approved transcripts.
+
+---
+
+## Step 1: Conversation History
+
+The single biggest improvement. Right now every request is stateless. Gemini sees one query with zero context from prior turns.
+
+### chat_POST.schema.ts
+
+```typescript
+export const schema = z.object({
+  query: z.string().min(1).max(2000),
+  history: z.array(z.object({
+    role: z.enum(["user", "assistant"]),
+    content: z.string(),
+  })).max(20).optional(),
+  mode: z.enum(["navigate", "tutor", "daily", "story", "quiz", "pronunciation", "wellness"]).default("navigate"),
+  context: z.object({
+    recordingId: z.string().max(255).optional(),
+    elderId: z.string().max(255).optional(),
+    manuscriptId: z.string().max(255).optional(),
+    currentPage: z.string().max(255).optional(),
+    targetLanguage: z.string().max(20).optional(),
+    proficiencyLevel: z.enum(["beginner", "intermediate", "advanced"]).optional(),
+  }).optional(),
+});
+```
+
+### voiceAssistantApi.ts
+
+Add `mode` parameter to `sendMessage`. Pass existing `messages` array as history:
+
+```typescript
+const sendMessage = useCallback(
+  async (
+    query: string,
+    context?: ChatContext & { mode?: string },
+    onAudioChunk?: (text: string) => void
+  ) => {
+    // ...existing setup...
+
+    const response = await fetch("/_api/voice-assistant/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query,
+        history: messages.slice(-20),
+        mode: context?.mode || "navigate",
+        context,
+      }),
+      signal: abortControllerRef.current.signal,
+    });
+    // ...rest unchanged...
+  },
+  [messages], // Add messages to dependency array
+);
+```
+
+### chat_POST.ts
+
+Replace the single string `contents` with multi-turn format:
+
+```typescript
+const contents = [
+  { role: "user", parts: [{ text: fullSystemPrompt }] },
+  { role: "model", parts: [{ text: "Understood." }] },
+  ...(history || []).map(msg => ({
+    role: msg.role === "user" ? "user" : "model",
+    parts: [{ text: msg.content }],
+  })),
+  { role: "user", parts: [{ text: query }] },
+];
+
+const result = await genAI.models.generateContentStream({
+  model: "gemini-3-flash-preview",
+  contents,
+  config: { maxOutputTokens: 800 },
+});
+```
+
+Everything else in the streaming loop stays identical. The SSE chunking, audio-chunk buffering, punctuation splitting, and flush logic all work the same.
+
+---
+
+## Step 2: RAG Integration
+
+### New file: helpers/ragSearch.ts
+
+Extract the search logic from `semantic_POST.ts` into a shared helper:
+
+```typescript
+import { generateEmbedding } from "./embeddingGenerator";
+import { db } from "./db";
+import { sql } from "kysely";
+
+export type RAGResult = {
+  type: string;
+  id: string;
+  title: string;
+  snippet: string;
+  distance: number;
+};
+
+export async function ragSearch(
+  query: string,
+  tables: string[],
+  limit: number = 5
+): Promise<RAGResult[]> {
+  const embedding = await generateEmbedding(query);
+  if (!embedding) return [];
+
+  const embeddingString = JSON.stringify(embedding);
+
+  const promises = tables.map(table => searchTable(table, embeddingString, limit));
+  const resultsArrays = await Promise.all(promises);
+
+  return resultsArrays
+    .flat()
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, limit);
+}
+
+// searchTable contains the same switch/case logic from semantic_POST.ts
+// but returns RAGResult[] instead of the full response shape.
+// Extract the per-table query logic into this function.
+```
+
+Then `semantic_POST.ts` can import and use `ragSearch()` instead of duplicating the logic. And `chat_POST.ts` calls it too.
+
+### Tables per mode
+
+```typescript
+const MODE_TABLES: Record<string, string[]> = {
+  navigate: ["recordings", "manuscripts", "myth_entities", "glossary_terms", "traditions", "communities"],
+  tutor: ["dictionary_words", "glossary_terms", "proverb_entries", "transcript_segments", "recordings"],
+  daily: ["recordings", "proverb_entries", "glossary_terms", "somatic_movements", "ceremonies", "dictionary_words"],
+  story: ["myth_entities", "ceremonies", "traditions", "proverb_entries", "recordings"],
+  quiz: ["glossary_terms", "dictionary_words", "proverb_entries", "myth_entities"],
+  pronunciation: ["dictionary_words", "glossary_terms", "transcript_segments"],
+  wellness: ["somatic_movements", "ceremonies", "plants", "foods", "food_recipes", "herbal_systems"],
+};
+```
+
+### Skip RAG for simple navigation
+
+```typescript
+const NAVIGATION_PATTERNS = /^(show me|go to|take me to|open|navigate to)\b/i;
+
+async function maybeGetRAGContext(query: string, mode: string): Promise<string> {
+  if (mode === "navigate" && NAVIGATION_PATTERNS.test(query.trim())) {
+    return "";
+  }
+
+  const tables = MODE_TABLES[mode] || MODE_TABLES.navigate;
+  const results = await ragSearch(query, tables, 5);
+
+  if (results.length === 0) return "";
+
+  return "\nRELEVANT CONTENT FROM ARCHIVE:\n" +
+    results.map(r => `[${r.type}] ${r.title}: ${r.snippet}`).join("\n");
+}
+```
+
+### In chat_POST.ts
+
+```typescript
+const ragContext = await maybeGetRAGContext(query, mode);
+const fullSystemPrompt = buildSystemPrompt(mode, context, ragContext);
+```
+
+The RAG adds ~200-500ms latency (embedding generation + parallel DB queries). For a voice-first app that's acceptable since TTS itself adds latency. The first audio chunk won't be delayed much because the RAG runs before streaming starts, and the streaming + chunking pipeline is already designed to get first audio out fast.
+
+---
+
+## Step 3: Mode-Aware System Prompts
+
+### New file: helpers/systemPrompts.ts
+
+Contains `buildSystemPrompt(mode, context, ragContext)` using the prompts from the voice map document.
+
+```typescript
+export function buildSystemPrompt(
+  mode: string,
+  context: any,
+  ragContext: string
+): string {
+  const BASE = `You are Fenix, the voice-first AI guide for Ejiogbe Voices — a global ancestral intelligence platform from Fenix Creation Studio.
+
+Named after the Phoenix — a symbol of rebirth across world cultures: the Bennu of Egypt, the Fenghuang of China, the Garuda of Southeast Asia, the Firebird of Slavic tradition. You embody the idea that ancestral knowledge doesn't die — it rises again through those willing to learn.
+
+RULES:
+- ALWAYS detect the language of the user's last message and reply in that same language.
+- NEVER end a response mid-sentence.
+- Be culturally respectful of ALL traditions.
+- You are warm, knowledgeable, and encouraging.
+- When you switch languages in your response, prefix with [LANG: xx] (ISO 639-1 code).
+
+Current page: ${context?.currentPage || "Unknown"}
+${context?.recordingId ? `Recording ID: ${context.recordingId}` : ""}
+${context?.elderId ? `Elder ID: ${context.elderId}` : ""}
+${context?.manuscriptId ? `Manuscript ID: ${context.manuscriptId}` : ""}
+${ragContext}`;
+
+  switch (mode) {
+    case "tutor":
+      return BASE + TUTOR_PROMPT(context);
+    case "pronunciation":
+      return BASE + PRONUNCIATION_PROMPT;
+    case "wellness":
+      return BASE + WELLNESS_PROMPT;
+    case "daily":
+      return BASE + DAILY_PROMPT(context);
+    case "story":
+      return BASE + STORY_PROMPT;
+    case "quiz":
+      return BASE + QUIZ_PROMPT;
+    default:
+      return BASE + NAVIGATE_PROMPT;
+  }
+}
+```
+
+Each mode constant contains the prompt text from the voice map document (tutor, pronunciation, wellness, daily, story, quiz, navigate). The navigate prompt keeps the existing path list and two-sentence-max rule.
+
+---
+
+## Step 4: Multilingual TTS with Voice Map
+
+### tts_POST.schema.ts
+
+```typescript
+export const schema = z.object({
+  text: z.string().min(1).max(500),
+  languageCode: z.string().max(20).optional(),
+});
+```
+
+### tts_POST.ts
+
+Import the voice map and use `resolveVoice()`:
+
+```typescript
+import { resolveVoice } from "../../helpers/voiceMap";
+
+// Inside handle():
+const { text, languageCode } = schema.parse(json);
+const voice = resolveVoice(languageCode || "en");
+
+const [response] = await client.synthesizeSpeech({
+  input: { text },
+  voice: { languageCode: voice.languageCode, name: voice.name },
+  audioConfig: { audioEncoding: "MP3" },
+});
+```
+
+### New file: helpers/voiceMap.ts
+
+Contains the `VOICE_MAP` and `resolveVoice()` from the voice map document. The full map with 26 Chirp3-HD voices, 2 Standard voices, and 9 fallback mappings.
+
+### useAudioQueue.ts changes
+
+The TTS call needs to accept a language code. Modify `addToQueue` to accept an optional language:
+
+```typescript
+const addToQueue = useCallback(
+  (text: string, lang?: string) => {
+    if (queueRef.current.length >= MAX_TEXT_CHUNKS) return;
+    queueRef.current.push({ text, lang });
+    processQueue();
+  },
+  [processQueue],
+);
+```
+
+Change the queue type from `string[]` to `{ text: string; lang?: string }[]`. In `playNext`, pass the language to the TTS fetch:
+
+```typescript
+const item = queueRef.current.shift();
+if (!item) { /* ... */ return; }
+
+const response = await fetch("/_api/voice-assistant/tts", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ text: item.text, languageCode: item.lang }),
+  signal: abortControllerRef.current.signal,
+});
+```
+
+### chat_POST.ts audio-chunk events
+
+Include language info so the frontend knows which voice to request:
+
+```typescript
+// When emitting audio-chunk events, detect [LANG: xx] tags
+let currentLang = "en"; // default
+
+// In the buffer processing:
+const langMatch = audioChunk.match(/\[LANG:\s*([^\]]+)\]/);
+if (langMatch) {
+  currentLang = langMatch[1].trim();
+  audioChunk = audioChunk.replace(langMatch[0], "").trim();
+}
+
+const audioEvent = `data: ${JSON.stringify({
+  type: "audio-chunk",
+  content: audioChunk,
+  lang: currentLang,
+})}\n\n`;
+```
+
+### VoiceAssistant.tsx handleIncomingAudioChunk
+
+Parse the `[LANG: xx]` tag and pass language to the queue:
+
+```typescript
+const handleIncomingAudioChunk = useCallback(
+  (rawText: string, lang?: string) => {
+    let displayableText = rawText;
+    let chunkLang = lang;
+
+    // [LANG: xx] tag
+    const langMatch = displayableText.match(/\[LANG:\s*([^\]]+)\]/);
+    if (langMatch) {
+      chunkLang = langMatch[1].trim();
+      displayableText = displayableText.replace(langMatch[0], "").trim();
+    }
+
+    // [NAVIGATE: /path]
+    const navMatch = displayableText.match(/\[NAVIGATE:\s*([^\]]+)\]/);
+    if (navMatch) {
+      navigate(navMatch[1]);
+      displayableText = displayableText.replace(navMatch[0], "").trim();
+    }
+
+    // [SUGGEST_RECORDING: keyword] — render suggestion card
+    const suggestMatch = displayableText.match(/\[SUGGEST_RECORDING:\s*([^\]]+)\]/);
+    if (suggestMatch) {
+      // TODO: trigger suggestion card in UI
+      displayableText = displayableText.replace(suggestMatch[0], "").trim();
+    }
+
+    // [SUGGEST_CONTENT: category/topic]
+    const contentMatch = displayableText.match(/\[SUGGEST_CONTENT:\s*([^\]]+)\]/);
+    if (contentMatch) {
+      // TODO: trigger content suggestion card
+      displayableText = displayableText.replace(contentMatch[0], "").trim();
+    }
+
+    if (displayableText.length > 0) {
+      addToQueue(displayableText, chunkLang);
+    }
+  },
+  [addToQueue, navigate],
+);
+```
+
+The SSE event handler in `voiceAssistantApi.ts` also needs updating to pass `lang` from the audio-chunk event:
+
+```typescript
+} else if (data.type === "audio-chunk") {
+  if (onAudioChunk) {
+    onAudioChunk(data.content, data.lang);
+  }
+}
+```
+
+---
+
+## Step 5: Frontend Mode Selector
+
+### VoiceAssistant.tsx
+
+Add mode state:
+
+```typescript
+const [currentMode, setCurrentMode] = useState<string>("navigate");
+```
+
+Mode bar above the input area (icons, no emoji in production, use Lucide icons):
+
+```tsx
+import { Compass, BookOpen, Sun, BookMarked, HelpCircle, AudioWaveform, Heart } from "lucide-react";
+
+const MODES = [
+  { id: "navigate", icon: Compass, label: "Guide" },
+  { id: "tutor", icon: BookOpen, label: "Tutor" },
+  { id: "daily", icon: Sun, label: "Daily" },
+  { id: "story", icon: BookMarked, label: "Story" },
+  { id: "quiz", icon: HelpCircle, label: "Quiz" },
+  { id: "pronunciation", icon: AudioWaveform, label: "Pronounce" },
+  { id: "wellness", icon: Heart, label: "Wellness" },
+];
+
+// In the JSX, above the input row:
+<div className={styles.modeBar}>
+  {MODES.map(m => (
+    <button
+      key={m.id}
+      className={`${styles.modeButton} ${currentMode === m.id ? styles.modeActive : ""}`}
+      onClick={() => {
+        setCurrentMode(m.id);
+        clearHistory(); // Fresh conversation for new mode
+      }}
+    >
+      <m.icon size={14} />
+      <span>{m.label}</span>
+    </button>
+  ))}
+</div>
+```
+
+Mode-specific suggestions:
+
+```typescript
+const MODE_SUGGESTIONS: Record<string, string[]> = {
+  navigate: [
+    "Show me recent recordings",
+    "Tell me about the traditions",
+    "Who are the elders?",
+    "Recommend something to listen to",
+  ],
+  tutor: [
+    "Teach me Yoruba greetings",
+    "What does 'ashe' mean?",
+    "Practice basic phrases with me",
+    "Explain a proverb in context",
+  ],
+  daily: [
+    "Start my daily practice",
+    "What should I study today?",
+    "Continue where I left off",
+  ],
+  story: [
+    "Tell me about Ogun",
+    "What is the story of Ifá?",
+    "Describe a naming ceremony",
+    "Tell me a proverb and its meaning",
+  ],
+  quiz: [
+    "Quiz me on Yoruba vocabulary",
+    "Test my knowledge of traditions",
+    "Give me a proverb quiz",
+  ],
+  pronunciation: [
+    "How do I pronounce 'Ọ̀rúnmìlà'?",
+    "Explain Yoruba tones",
+    "Help me with Hindi sounds",
+  ],
+  wellness: [
+    "Guide me through a grounding exercise",
+    "Tell me about healing plants",
+    "What ceremony is good for new beginnings?",
+  ],
+};
+```
+
+Pass mode through sendMessage:
+
+```typescript
+const handleSend = (text: string) => {
+  ensureAudioUnlocked();
+  if (!text.trim()) return;
+
+  const context = {
+    currentPage: location.pathname,
+    mode: currentMode,
+    recordingId: /* ...existing... */,
+    elderId: /* ...existing... */,
+    manuscriptId: /* ...existing... */,
+  };
+
+  sendMessage(text, context, handleIncomingAudioChunk);
+  setTranscript("");
+};
+```
+
+---
+
+## Step 6: User Learning Profile
+
+### Migration SQL
+
+```sql
+CREATE TABLE public.user_learning_profiles (
+  user_id uuid NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  target_languages text[] DEFAULT '{}',
+  proficiency_levels jsonb DEFAULT '{}',
+  interests text[] DEFAULT '{}',
+  daily_goal_minutes integer DEFAULT 5,
+  streak_count integer DEFAULT 0,
+  streak_last_date date,
+  total_xp integer DEFAULT 0,
+  last_session_topics text[] DEFAULT '{}',
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now(),
+  CONSTRAINT user_learning_profiles_pkey PRIMARY KEY (user_id)
+);
+```
+
+This complements the existing `user_vocabulary` table (mastery_level, next_review_at) and `monthly_usage` table (ai_learning_lab counter).
+
+For daily mode, the chat endpoint can fetch the user's profile and inject it into the prompt template where `{{TARGET_LANGUAGE}}`, `{{PROFICIENCY}}`, `{{INTERESTS}}`, and `{{LAST_SESSION}}` placeholders are.
+
+---
+
+## Implementation Order
+
+| Step | What | Files Changed | Files Created |
+|------|------|---------------|---------------|
+| 1 | Conversation history | `chat_POST.schema.ts`, `chat_POST.ts`, `voiceAssistantApi.ts` | — |
+| 2 | RAG in chat loop | `chat_POST.ts`, `semantic_POST.ts` (refactor) | `helpers/ragSearch.ts` |
+| 3 | Mode-aware prompts | `chat_POST.ts` | `helpers/systemPrompts.ts` |
+| 4 | Multilingual TTS | `tts_POST.schema.ts`, `tts_POST.ts`, `useAudioQueue.ts`, `chat_POST.ts` (audio events), `voiceAssistantApi.ts` | `helpers/voiceMap.ts` |
+| 5 | Frontend mode UI | `VoiceAssistant.tsx` | — |
+| 6 | User learning profile | — | Migration SQL, `helpers/learningProfile.ts` |
+
+Steps 1-3 are backend only and can ship without any visible UI changes. The agent immediately gets smarter. Steps 4-5 add the visible frontend changes. Step 6 enables personalization for daily mode.
+
+---
+
+## Tag Reference
+
+| Tag | Emitted By | Parsed By | Action |
+|-----|-----------|-----------|--------|
+| `[NAVIGATE: /path]` | Gemini | `VoiceAssistant.tsx` | `navigate(path)`, stripped before TTS |
+| `[LANG: xx]` | Gemini | `handleIncomingAudioChunk` | Routes TTS to correct voice via `resolveVoice()` |
+| `[SUGGEST_RECORDING: keyword]` | Gemini | `handleIncomingAudioChunk` | Renders suggestion card (future) |
+| `[SUGGEST_CONTENT: category/topic]` | Gemini | `handleIncomingAudioChunk` | Renders content card (future) |
